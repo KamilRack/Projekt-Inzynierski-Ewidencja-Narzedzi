@@ -1,0 +1,167 @@
+﻿@model Tuple<List<Narzedzie>, List<Awaria>>
+
+<table class="table" id="awarie2">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Opis awarii:")
+            </th>
+            <th>
+                @Html.DisplayName("Numer telefonu:")
+            </th>
+            <th>
+                @Html.DisplayName("Data zgłoszenia:")
+            </th>
+            <th>
+                @Html.DisplayName("Status realizacji:")
+            </th>
+             @if (User.IsInRole("admin") || User.IsInRole("nadzor"))
+                    {
+            <th>
+                @Html.DisplayName("Użytkownik zgłaszający:")
+            </th>
+                    }
+           
+            <th>
+                @Html.DisplayName("Nazwa narzędzia:")
+            </th>
+             
+            <th>
+
+                @Html.DisplayName("Opcje:")
+            </th>
+                    
+                    
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Item2.Where(a => a.Status != StatusAwaria.zakończone))
+        {
+            <tr>
+                <td>
+                    @if (item.DescriptionAwaria.Length <= 40)
+                    {
+                        @Html.DisplayFor(modelItem => item.DescriptionAwaria)
+                    }
+                    else
+                    {
+                        @(item.DescriptionAwaria.Substring(0, 30) + "...")
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberAwaria)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataPrzyjecia)
+                </td>
+                <td class="col-md-1.5">
+                    @switch (item.Status)
+                    {
+                        case StatusAwaria.nowe:
+                            <i class="bi bi-circle-fill" style="color: var(--bs-success);"></i>
+                            break;
+                        case StatusAwaria.realizacja:
+                            <i class="bi bi-circle-fill" style="color: var(--bs-primary);"></i>
+                            break;
+                        case StatusAwaria.zakończone:
+                            <i class="bi bi-circle-fill" style="color: var(--bs-secondary);"></i>
+                            break;
+                        case StatusAwaria.oczekujące:
+                            <i class="bi bi-circle-fill" style="color: var(--bs-warning);"></i>
+                            break;
+                    }
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                @{
+                    if (User.IsInRole("admin") || User.IsInRole("nadzor"))
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Uzytkownicy.Email)
+                </td>
+                }
+                }
+               
+                <td>
+                    @Html.DisplayFor(modelItem => item.Narzedzie.Nazwa)
+                </td>
+                <td>
+
+                    
+                        <a asp-area="" asp-controller="Awarie" asp-action="Details" asp-route-id="@item.IdAwaria" class="btn btn-primary btn-sm" target="_blank">Przejdź do zgłoszenia</a>
+                    
+                    
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/b-2.3.3/b-html5-2.3.3/b-print-2.3.3/sp-2.1.0/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#awarie2').DataTable({
+                pageLength: 50,
+                language: {
+                    "decimal": "",
+                    "emptyTable": "Brak danych do wyświetlenia",
+                    "info": " Pozycje od _START_ do _END_ z _TOTAL_ rekordów",
+                    "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                    "infoFiltered": "(filtrowanie z _MAX_ dostępnych pozycji)",
+                    "infoPostFix": "",
+                    "thousands": " ",
+                    "lengthMenu": "Pokaż _MENU_ pozycji",
+                    "loadingRecords": "Ładowanie...",
+                    "processing": "Przetwarzanie...",
+                    "search": "Wyszukaj:",
+                    "zeroRecords": "Nie znaleziono danych",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "last": "Ostatnia",
+                        "next": "Następna",
+                        "previous": "Poprzednia"
+                    },
+                    "aria": {
+                        "sortAscending": ": sortuje kolumnę rosnąco",
+                        "sortDescending": ": sortuje kolumnę malejąco"
+                    }
+                }
+            });
+        });
+
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.user-selector').on('change', function () {
+                var awariaId = $(this).data('id');
+                var selectedUserId = $(this).val();
+
+                $.ajax({
+                    url: $(this).data('url'),
+                    type: 'POST',
+                    data: { awariaId: awariaId, selectedUserId: selectedUserId },
+                    success: function (response) {
+                        if (response.success) {
+                            // Zaktualizuj zawartość komórki po stronie klienta.
+                            $('#user-cell-' + awariaId).text(selectedUserId);
+                        } else {
+                            // Obsłuż błąd w odpowiedni sposób.
+                            console.error(response.error);
+                        }
+                    },
+                    error: function (error) {
+                        // Obsłuż błąd w odpowiedni sposób.
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
+
+}

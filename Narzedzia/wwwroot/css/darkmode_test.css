@@ -1,0 +1,98 @@
+﻿body {
+    margin-bottom: 60px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    background-color: #3E3E3E;
+    color: #FFFFFF;
+}
+.card-footer {
+    color: white;
+    background-color: #808080;
+}
+.tools-header {
+    padding-top: 40px; /* Dostosuj wartość marginesu do wysokości paska nawigacyjnego */
+    font-family: 'Oswald';
+    font-weight: 500;
+    color: white;
+}
+#table {
+    background-color: #292929;
+    color: white;
+}
+.table {
+    background-color: #292929;
+    color: white;
+}
+
+/* Style dla trybu ciemnego */
+#calendar {
+
+background-color: #292929;
+color: white;
+}
+
+/* Zmiana koloru tekstu dla sobót */
+.fc-day-sat .fc-daygrid-day-number {
+    color: white;    
+}
+.fc-day-sat {
+    background-color: darkgray; /* Ciemny szary - przykład */
+}
+/* Zmiana koloru tła dla niedziel */
+.fc-day-sun {
+    background-color: darkgray; /* Ciemny szary - przykład */
+}
+
+/* Zmiana koloru tekstu dla niedziel */
+.fc-day-sun .fc-daygrid-day-number {
+    color: white;
+}
+
+.single-day-event  {
+    color: white; /* Białe teksty dla lepszej czytelności */
+}
+.multi-day-event
+{
+    color: white;
+}
+/* Możesz dostosować kolory wydarzeń dla trybu ciemnego */
+.single-day-event {
+    background-color: #007bff !important; /* Jasniejszy niebieski dla lepszej widoczności */
+}
+
+.multi-day-event {
+    background-color: #17a2b8 !important; /* Jasniejszy błękit dla lepszej widoczności */
+}
+/* Zmiana koloru numerów dni */
+.fc-daygrid-day-number {
+    color: white;
+}
+
+/* Zmiana koloru nazw dni tygodnia */
+.fc-col-header-cell-cushion {
+    color: white;
+}
+.single-day-event {
+    color: black; /* Czarny tekst dla lepszej czytelności */
+    font-size: 15px !important;
+}
+
+.multi-day-event {
+    color: black; /* Czarny tekst dla lepszej czytelności */
+    background-color: dodgerblue !important;
+    font-size: 15px !important;
+}
+.text-danger {
+    margin-top: 40px;
+}
+.form-control
+{
+    font-size: 20px;
+}
+
+.card-tools-background .card {
+    background-color: #333131 !important; /* Przykładowy jasnoszary kolor tła */
+}
+.card-custom {
+    background-color: #333131;
+}

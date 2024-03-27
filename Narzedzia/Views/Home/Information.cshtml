@@ -1,0 +1,348 @@
+﻿@{
+    ViewData["Title"] = "Instrukcja";
+}
+<!DOCTYPE html>
+<head>
+
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="~/css/help.css" />
+
+</head>
+
+<h1 class="oswald_400 tools-header">Wsparcie techniczne</h1>
+<hr />
+
+<p>
+    Witamy w zakładce Wsparcia Technicznego!
+    <br>
+    Nasz zespół jest gotów pomóc w rozwiązywaniu wszelkich problemów, związanych z korzystaniem z naszej aplikacji.
+    W poniższych zakładkach znajdziesz najczęstsze pytania i odpowiedzi, instrukcje krok po kroku oraz wiele
+    innych pomocnych materiałów. Przeszukaj nasze zasoby, aby znaleźć odpowiedzi na swoje pytania. Poniżej znajdziesz
+    również informacje, jak skontaktować się z nami aby otrzymać pomoc.
+</p>
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Informacje</button>
+    @{
+    if (User.IsInRole("admin") || (User.IsInRole("nadzor")))
+    {
+        <button class="nav-link" id="nav-arch-tab" data-bs-toggle="tab" data-bs-target="#nav-arch" type="button" role="tab" aria-controls="nav-arch" aria-selected="false">Architektura</button>
+    }
+    }
+        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">FAQ</button>
+        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Kontakt</button>
+        <button class="nav-link" id="nav-histo-tab" data-bs-toggle="tab" data-bs-target="#nav-histo" type="button" role="tab" aria-controls="nav-histo" aria-selected="false">Historia</button>
+    </div>
+</nav>
+
+<div class="tab-content" id="nav-tabContent">
+
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+        <div>
+            <h2 class="oswald_400">Bieżące informacje:</h2>
+        </div>
+        <div>
+            Planowane wdrożenie - 2024-04-05<br>
+            Obecnie pracujemy nad kalendarzem, harmonogramem kontroli narzędzi...
+        </div>
+
+    </div>
+
+    <div class="tab-pane fade" id="nav-arch" role="tabpanel" aria-labelledby="nav-arch-tab">
+
+        <div>
+            <h2 class="oswald_400">Drzewo programu:</h2>
+        </div>
+        <div>
+            <p>
+                <h4 class="oswald_300"><b>Administrator</b> - pełny dostęp.</h4>
+            </p>
+
+            <div class="container text-center bs-secondary-color">
+                <div class="row">
+                    <div class="card text-bg-primary mb-2" style="max-width: 12rem;">
+                        <div class="card-header">Awarie</div>
+                        <div class="card-body">
+                            <p class="card-text">Wykaz obecnie naprawianych narzędzi.</p>
+                            <div class="row">
+                                <div class="card" style="font-size: x-small; color:black">Dodaj</div>
+                                <div class="card" style="font-size: x-small; color:gray">Szczegóły</div>
+                                <div class="card" style="font-size: x-small; color:blue">Edytuj</div>
+                                <div class="card" style="font-size: x-small; color:red">Usuń</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card text-bg-primary mb-2" style="max-width: 12rem;">
+                        <div class="card-header">Narzędzia</div>
+                        <div class="card-body">
+                            <p class="card-text">Wykaz wszystkich narzędzi.</p>
+                            <div class="row">
+                                <div class="card" style="font-size: x-small; color:black">Dodaj</div>
+                                <div class="card" style="font-size: x-small; color:gray">Szczegóły</div>
+                                <div class="card" style="font-size: x-small; color:blue">Edytuj</div>
+                                <div class="card" style="font-size: x-small; color:red">Usuń</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card text-bg-primary mb-2" style="max-width: 12rem;">
+                        <div class="card-header">Kategorie</div>
+                        <div class="card-body">
+                            <p class="card-text">Wykaz wszystkich kategorii.</p>
+                            <div class="row">
+                                <div class="card" style="font-size: x-small; color:black">Dodaj</div>
+                                <div class="card" style="font-size: x-small; color:blue">Edytuj</div>
+                                <div class="card" style="font-size: x-small; color:red">Usuń</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card text-bg-primary mb-2" style="max-width: 12rem;">
+                        <div class="card-header">Producenci</div>
+                        <div class="card-body">
+                            <p class="card-text">Wykaz wszystkich producentów.</p>
+                            <div class="row">
+                                <div class="card" style="font-size: x-small; color:black">Dodaj</div>
+                                <div class="card" style="font-size: x-small; color:blue">Edytuj</div>
+                                <div class="card" style="font-size: x-small; color:red">Usuń</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card text-bg-warning mb-2" style="max-width: 12rem;">
+                        <div class="card-header">Użytkownicy</div>
+                        <div class="card-body">
+                            <p class="card-text">Wykaz wszystkich użytkowników.</p>
+                            <div class="row">
+                                <div class="card" style="font-size: x-small; color:black">Dodaj</div>
+                                <div class="card" style="font-size: x-small; color:blue">Edytuj</div>
+                                <div class="card" style="font-size: x-small; color:red">Usuń</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card text-bg-warning mb-2" style="max-width: 12rem;">
+                        <div class="card-header">Wydziały</div>
+                        <div class="card-body">
+                            <p class="card-text">Wykaz wszystkich wydziałów.</p>
+                            <div class="row">
+                                <div class="card" style="font-size: x-small; color:black">Dodaj</div>
+                                <div class="card" style="font-size: x-small; color:blue">Edytuj</div>
+                                <div class="card" style="font-size: x-small; color:red">Usuń</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card text-bg-warning mb-2" style="max-width: 12rem;">
+                        <div class="card-header">Stanowiska</div>
+                        <div class="card-body">
+                            <p class="card-text">Wykaz wszystkich stanowisk.</p>
+                            <div class="row">
+                                <div class="card" style="font-size: x-small; color:black">Dodaj</div>
+                                <div class="card" style="font-size: x-small; color:blue">Edytuj</div>
+                                <div class="card" style="font-size: x-small; color:red">Usuń</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p>
+                <h4 class="oswald_300"><b>Nadzór</b> - ograniczony dostęp.</h4>
+            </p>
+            <div class="container text-center bs-secondary-color">
+                <div class="row">
+                    <div class="card text-bg-primary mb-2" style="max-width: 12rem;">
+                        <div class="card-header">Awarie</div>
+                        <div class="card-body">
+                            <p class="card-text">Wykaz obecnie naprawianych narzędzi.</p>
+                            <div class="row">
+                                <div class="card" style="font-size: x-small; color:black">Dodaj</div>
+                                <div class="card" style="font-size: x-small; color:gray">Szczegóły</div>
+                                <div class="card" style="font-size: x-small; color:blue">Edytuj</div>
+                                <div class="card" style="font-size: x-small; color:red">Usuń</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card text-bg-primary mb-2" style="max-width: 12rem;">
+                        <div class="card-header">Narzędzia</div>
+                        <div class="card-body">
+                            <p class="card-text">Wykaz wszystkich narzędzi.</p>
+                            <div class="row">
+                                <div class="card" style="font-size: x-small; color:black">Dodaj</div>
+                                <div class="card" style="font-size: x-small; color:gray">Szczegóły</div>
+                                <div class="card" style="font-size: x-small; color:blue">Edytuj</div>
+                                <div class="card" style="font-size: x-small; color:red">Usuń</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card text-bg-primary mb-2" style="max-width: 12rem;">
+                        <div class="card-header">Kategorie</div>
+                        <div class="card-body">
+                            <p class="card-text">Wykaz wszystkich kategorii.</p>
+                            <div class="row">
+                                <div class="card" style="font-size: x-small; color:black">Dodaj</div>
+                                <div class="card" style="font-size: x-small; color:blue">Edytuj</div>
+                                <div class="card" style="font-size: x-small; color:red">Usuń</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card text-bg-primary mb-2" style="max-width: 12rem;">
+                        <div class="card-header">Producenci</div>
+                        <div class="card-body">
+                            <p class="card-text">Wykaz wszystkich producentów.</p>
+                            <div class="row">
+                                <div class="card" style="font-size: x-small; color:black">Dodaj</div>
+                                <div class="card" style="font-size: x-small; color:blue">Edytuj</div>
+                                <div class="card" style="font-size: x-small; color:red">Usuń</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p>
+                <h4 class="oswald_300"><b>Pracownik</b> - ograniczony dostęp.</h4>
+            </p>
+            <div class="container text-center bs-secondary-color">
+                <div class="row">
+                    <div class="card text-bg-primary mb-2" style="max-width: 12rem;">
+                        <div class="card-header">Awarie</div>
+                        <div class="card-body">
+                            <p class="card-text">Wykaz obecnie naprawianych narzędzi.</p>
+                            <div class="row">
+                                <div class="card" style="font-size: x-small; color:black">Dodaj</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+
+        <div>
+            <h2 class="oswald_400">Najczęściej zadawane pytania:</h2>
+        </div>
+        <div>
+            <ol>
+
+                <li><b>Jak mogę dodać nowe narzędzie do systemu ewidencji?</b></li>
+                Tylko administrator oraz nadzór wydziału może dodać nowe narzędzie.
+                Aby to zrobić, zaloguj się do aplikacji, przejdź do sekcji "Narzędzia", kliknij "Dodaj" i uzupełnij niezbędne informacje,
+                takie jak nazwa, numer seryjny itp.
+
+                <li><b>Gdzie mogę sprawdzić listę wszystkich narzędzi przypisanych do mnie?</b></li>
+                Lista przypisanych narzędzi, wyświetli się po zalogowaniu.
+
+                <li><b>Co zrobić, jeśli zgubiłem narzędzie?</b></li>
+                W przypadku zgubienia narzędzia natychmiast zgłoś to swojemu przełożonemu.
+                Możemy wtedy podjąć odpowiednie kroki w celu odnalezienia lub zastąpienia brakującego narzędzia.
+
+                <li><b>Jak mogę zaktualizować informacje na temat narzędzia, takie jak lokalizacja czy stan techniczny?</b></li>
+                Przejdź do sekcji "Narzędzia", wybierz narzędzie, które chcesz zaktualizować, a następnie kliknij przycisk "Edytuj".
+                Możesz tam wprowadzić wszelkie niezbędne zmiany.
+
+                <li><b>Jak sprawdzić dostępność konkretnego narzędzia?</b></li>
+                W sekcji "Narzędzia" wpisz nazwę lub numer identyfikacyjny narzędzia, aby sprawdzić jego dostępność i aktualną lokalizację.
+
+                <li><b>Dlaczego wdrażamy nowy program do ewidencji narzędzi?</b></li>
+                <ul>
+                    <li>Rzetelna ewidencja stanów narzędzi i materiałów w całej firmie z podziałem na wydziały.</li>
+                    <li>
+                        Sprzęty bez przeglądów stwarzają ryzyko dla pracownika, a w konsekwencji wysokie kary dla pracodawcy.
+                        Narzędzia pomiarowe np. klucze dynamometryczne, bez legalizacji mogą wpłynąć na wykonanie złych pomiarów.
+                        Skończyć się to może błędami w produkcji a w najgorszym przypadku reklamacjami Naszych klientów.
+                    </li>
+                    <li>
+                        W Naszej firmie gdzie kontrola wydań i zwrotów narzędzi odbywa się na papierze często organizowane są
+                        wielkie poszukiwania zaginionych narzędzi, które ostatecznie nigdy nie zostają znalezione,
+                        a poświęconego czasu nie da się odzyskać.
+                    </li>
+                    <li>Zwiększy się poszanowanie narzędzi i odpowiedzialność pracowników za powierzony im sprzęt.</li>
+                </ul>
+
+                <li><b>Które narzędzia znajdują się w bazie?</b></li>
+                Wszystkie, bez wyjątków. Przykłady:
+                <ul>
+                    <li>Klucze dynamometryczne, pneumatyczne, elektryczne</li>
+                    <li>Suwnice i żurawie</li>
+                    <li>Zawiesia specjalne, pasy</li>
+                    <li>Wózki narzędziowe, technologiczne oraz logistyczne</li>
+                    <li>i wiele innych...</li>
+                </ul>
+
+            </ol>
+
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+        <div>
+            <h2 class="oswald_400">Wsparcie techniczne:</h2>
+        </div>
+        <div>
+            <p>
+                Jeżeli potrzebujesz natychmiastowej pomocy, skorzystaj z naszej usługi wsparcia telefonicznego.
+                Poniżej znajdziesz numer telefonu oraz adres e-mail, pod którymi czuwamy, aby odpowiedzieć na
+                Twoje pytania.
+            </p>
+
+            <p>numer telefonu: <b>+48 111-222-333</b></p>
+
+            <p>e-mail: <b>aaa.bbb@cnhind.com.</b> <a href="mailto:konrad.wiankowski@cnhind.com">Kliknij tutaj</a> aby wysłać wiadomość.</p>
+
+            <p>Dziękujemy, że jesteś z nami. Z przyjemnością służymy pomocą!</p>
+        </div>
+
+    </div>
+    <div class="tab-pane fade" id="nav-histo" role="tabpanel" aria-labelledby="nav-histo-tab">
+
+        <div>
+            <h2 class="oswald_400">Historia:</h2>
+        </div>
+        <!--<div>-->
+        <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="2000">
+                    <div class="d-block w-100">
+                        <div class="card-header text-center"><b>2022-10-01</b></div>
+                        <div class="card-body text-center">
+                            <p class="card-text">Pojawił się problem... </p>
+                        </div>
+                    </div>
+                    <img src="~/img/pexels-fauxels-3182812.jpg" class="d-block mx-auto" width="320" height="260" alt="Image">
+                </div>
+                <div class="carousel-item" data-bs-interval="2000">
+                    <div class="d-block w-100">
+                        <div class="card-header text-center"><b>2022-10-15</b></div>
+                        <div class="card-body text-center">
+                            <p class="card-text">Pierwsze spotkanie projektowe</p>
+                        </div>
+                    </div>
+                    <img src="~/img/pexels-fauxels-3183150.jpg" class="d-block mx-auto" width="320" height="260" alt="Image">
+                </div>
+                <div class="carousel-item" data-bs-interval="2000">
+                    <div class="d-block w-100">
+                        <div class="card-header text-center"><b>2022-11-05</b></div>
+                        <div class="card-body text-center">
+                            <p class="card-text">Pierwsze wywiady z pracownikami CNHind</p>
+                        </div>
+                    </div
+                    ><img src="~/img/pexels-fauxels-3184418.jpg" class="d-block mx-auto" width="320" height="260" alt="Image">
+                </div> 
+            </div>
+            @*     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+            </button> *@
+        </div>
+        <!--</div>-->
+
+    </div>
+</div>

@@ -1,0 +1,68 @@
+﻿@model Narzedzia.Models.Uzytkownik
+
+@{
+	ViewData["Title"] = "Edytuj użytkownika";
+}
+
+<h1 class="oswald_400 tools-header">Edytuj użytkownika:</h1>
+<hr />
+<div class="row">
+	<div class="col-md-4 interspace">
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="Id" />
+			<input type="hidden" asp-for="ConcurrencyStamp" />
+			<input type="hidden" asp-for="PasswordHash" />
+			<div class="form-group">
+				<label asp-for="Email" class="control-label"></label>
+				<input asp-for="Email" class="form-control" />
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label for="pass" class="control-label">Zmiana hasła (pozostaw puste dla dotychczasowego)</label>
+				<input type="password" value="" id="pass" name="pass" class="form-control" />
+			</div>
+			<hr class="mt-5" />
+			<div class="form-group">
+				<label asp-for="Imie" class="control-label"></label>
+				<input asp-for="Imie" class="form-control" />
+				<span asp-validation-for="Imie" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Nazwisko" class="control-label"></label>
+				<input asp-for="Nazwisko" class="form-control" />
+				<span asp-validation-for="Nazwisko" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="NrKontrolny" class="control-label"></label>
+				<input asp-for="NrKontrolny" class="form-control" />
+				<span asp-validation-for="NrKontrolny" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="WydzialId" class="control-label"></label>
+				<select id="WydzialId" name="WydzialId" class="form-control" asp-items="ViewBag.Wydzial"></select>
+				@*<input asp-for="WydzialId" class="form-control" />*@
+			</div>
+			<div class="form-group">
+				<label asp-for="StanowiskoId" class="control-label"></label>
+				<select id="StanowiskoId" name="StanowiskoId" class="form-control" asp-items="ViewBag.Stanowisko"></select>
+				@*<input asp-for="StanowiskoId" class="form-control" />*@
+			</div>
+			<div class="form-group">
+				<label for="role" class="control-label">Rola</label>
+				<select id="role" name="role" class="form-control" asp-items="ViewBag.Roles"></select>
+			</div>
+
+			<div class="form-group">
+				<input type="submit" value="Zapisz zmiany" class="btn btn-primary" />
+				<a asp-action="Index" class="btn btn-secondary">Powrót</a>
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

@@ -1,0 +1,732 @@
+﻿@*@model IEnumerable<Narzedzia.Models.ParentHomeModel>? *@
+@model Tuple<List<Narzedzie>, List<Awaria>>
+@{
+    ViewData["Title"] = "Strona główna";
+    
+
+}
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+    <style>
+        /* Stylizacja kart */
+        .card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out;
+            margin-bottom: 25px;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+            /* Efekt cienia */
+            .card:hover {
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                transform: translateY(-5px);
+            }
+
+        /* Stylizacja tytułu karty */
+        .card-body {
+            padding: 20px;
+            font-size: 4.0em;
+            font-weight: 600;
+        }
+
+       
+
+            /* Animacja tekstu w stopce karty */
+            .card-footer:hover {
+                animation: bounce 0.5s ease-in-out;
+            }
+
+        .admin-button {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .card.cd:hover {
+            transform: scale(1.05); /* Zwiększa rozmiar karty o 5% po najechaniu myszką */
+            transition: transform 0.3s ease; /* Dodaje płynną animację */
+        }
+
+        .row.justify-content-center {
+            margin-bottom: -20px; /* Dostosuj wartość marginesu według potrzeb */
+        }
+
+      
+
+        /* Dodaj styl do kontenera row */
+        .row-chart {
+            margin-top: 30px; /* Dostosuj wartość marginesu górnego */
+            margin-bottom: 20px; /* Dostosuj wartość marginesu dolnego */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Dodaj styl do poszczególnych kart */
+        .card.cd {
+            flex: 1 0 calc(25% - 20px); /* Rozciąga karty na całą szerokość dostępnego miejsca */
+            max-width: calc(25% - 20px); /* Ustawia maksymalną szerokość karty */
+        }
+
+        /* Dodaj styl do tytułu narzędzi */
+        .tools-header {
+            padding-top: 40px; /* Dostosuj wartość marginesu do wysokości paska nawigacyjnego */
+        }
+
+        .cb-e {
+            background-color: var(--bs-secondary);
+            color: white;
+            border-color: black;
+        }
+
+        .cb-q {
+            background-color: var(--bs-success);
+            color: white;
+            border-color: black;
+        }
+
+        .cb-w {
+            background-color: var(--bs-primary);
+            color: white;
+            border-color: black;
+        }
+
+        .cb-r {
+            background-color: #abadaf;
+            color: white;
+            border-color: black;
+        }
+
+        
+    </style>
+
+</head>
+
+@{
+    if (User.IsInRole("admin") || (User.IsInRole("nadzor")))
+    {
+        
+        <div class="container">
+            <div class="row justify-content-center justify-text-center gx-1">
+
+                <h1 class="text-center oswald_400 header-title tools-header tools-darkheader">Narzędzia: @ViewBag.NarzedziaList</h1>
+
+                <hr />
+                <div class="card cd col-6 col-sm-4 hover-card">
+                    <div class="card-body cb-u">@ViewBag.Uzywane</div>
+                    <div class="card-footer inter_300">Używane</div>
+                </div>
+                <div class="card cd col-6 col-sm-4 hover-card">
+                    <div class="card-body cb-n">@ViewBag.Naprawiane</div>
+                    <div class="card-footer inter_300">Naprawiane</div>
+                </div>
+                <div class="card cd col-6 col-sm-4 hover-card">
+                    <div class="card-body cb-p">@ViewBag.Przyjete</div>
+                    <div class="card-footer inter_300">Przyjęte</div>
+                </div>
+                <div class="card cd col-6 col-sm-4 hover-card">
+                    <div class="card-body cb-z">@ViewBag.Zlikwidowane</div>
+                    <div class="card-footer inter_300">Zlikwidowane</div>
+                </div>
+                <h1 class="text-center oswald_400 header-title tools-header tools-darkheader">Awarie: @ViewBag.AwarieList</h1>
+
+                    <hr />
+                    <div class="card cd col-lg-4 col-md-6 col-sm-12 hover-card">
+                        <div class="card-body cb-q">@ViewBag.NoweAwarie</div>
+                        <div class="card-footer inter_300">Nowe</div>
+                    </div>
+
+                    <div class="card cd col-lg-4 col-md-6 col-sm-12 hover-card">
+                        <div class="card-body cb-w">@ViewBag.AwarieRealizacja</div>
+                        <div class="card-footer inter_300">Realizowane</div>
+                    </div>
+
+                    <div class="card cd col-lg-4 col-md-6 col-sm-12 hover-card">
+                        <div class="card-body cb-r">@ViewBag.AwarieOczekujace</div>
+                        <div class="card-footer inter_300">Oczekujące</div>
+                    </div>
+
+                    <div class="card cd col-lg-4 col-md-6 col-sm-12 hover-card">
+                        <div class="card-body cb-e">@ViewBag.AwarieZakonczone</div>
+                        <div class="card-footer inter_300">Zakończone</div>
+                    </div>
+              
+            </div>
+              
+            </div>
+
+        <div class="container">
+            <h1 class="text-center oswald_400 header-title tools-header tools-darkheader">Graficzna prezentacja statusów narzędzi oraz awarii:</h1>
+            <hr>
+
+            <!--  Canvas w osobnej kolumnie z odpowiednimi klasami -->
+            <div class="row justify-content-center justify-text-center mb-5 chart-column">
+                <div class="col-md-6">
+                    <canvas id="myChart" style="width: 100%; height: 500px;"></canvas>
+                </div>
+                <div class="col-md-6">
+                    <canvas id="myChartNarzedzia" style="width: 100%; height: 500px;"></canvas>
+                </div>
+                
+                <div>
+                </div>
+            </div>
+        </div>
+
+      
+
+             
+
+                    @if (User.IsInRole("admin"))
+                    {
+
+
+            
+
+           
+            <h1 class="text-center mb-3 oswald_400">Lista zgłoszeń: @*@ViewBag.ImieNazwisko (@User.Identity?.Name)*@</h1>
+            <hr />
+            <div id="lista-zgloszen-container1">
+                @await Html.PartialAsync("_AwariePartialView", Model)
+            </div>
+           
+
+                    }
+                    @if (User.IsInRole("nadzor"))
+                    {
+
+           
+          
+            <h1 class="text-center mb-3 oswald_400">Lista Zgłoszenia: @*@ViewBag.ImieNazwisko (@User.Identity?.Name)*@</h1>
+            <hr />
+            <div id="lista-zgloszen-container2">
+                @await Html.PartialAsync("_AwariePartialView", Model)
+            </div>
+         
+        }
+
+
+
+
+    }
+    @if (User.IsInRole("pracownik"))
+    {
+        <div class="container">
+            <div class="row justify-content-center justify-text-center mb-5">
+
+                <h1 class="text-center oswald_400 tools-header">Podsumowanie Twoich narzędzi</h1>
+
+                <hr />
+
+                <div class="card cd col-4 col-lg-2 summary-card">
+                    <div class="card-body cb-p">@ViewBag.Przyjete</div>
+                    <div class="card-footer inter_300">Przyjęte</div>
+                </div>
+
+                <div class="card cd col-4 col-lg-2 summary-card">
+                    <div class="card-body cb-u">@ViewBag.Uzywane</div>
+                    <div class="card-footer inter_300">Używane</div>
+                </div>
+
+                <div class="card cd col-4 col-lg-2 summary-card">
+                    <div class="card-body cb-n">@ViewBag.Naprawiane</div>
+                    <div class="card-footer inter_300">Naprawiane</div>
+                </div>
+
+                <div class="card cd col-4 col-lg-2 summary-card">
+                    <div class="card-body cb-z">@ViewBag.Zlikwidowane</div>
+                    <div class="card-footer inter_300">Zlikwidowane</div>
+                </div>
+
+            </div>
+        </div>
+        <h1 class="text-center mb-3 oswald_400 ">Lista narzędzi: <!--@ViewBag.ImieNazwisko (@User.Identity?.Name)--></h1>
+        <hr />
+
+        <table class="table" id="tools">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayName("Nazwa")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Producent")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Numer narzędzia")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Kategoria")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Data przyjęcia")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Status")
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var narzedzie in Model.Item1)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => narzedzie.Nazwa)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => narzedzie.Producenci.NazwaProducenta)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => narzedzie.NumerNarzedzia)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => narzedzie.Kategorie.NazwaKategorii)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => narzedzie.DataPrzyjecia)
+                        </td>
+                        <td>
+                            @switch (narzedzie.Status)
+                            {
+                                case Status.przyjęte:
+                                    <i class="bi bi-circle-fill" style="color: #abadaf;"></i>
+                                    break;
+
+                                case Status.używane:
+                                    <i class="bi bi-circle-fill" style="color: var(--bs-success);"></i>
+                                    break;
+
+                                case Status.naprawiane:
+                                    <i class="bi bi-circle-fill" style="color: var(--bs-primary);"></i>
+                                    break;
+
+                                case Status.zlikwidowane:
+                                    <i class="bi bi-circle-fill" style="color: var(--bs-secondary);"></i>
+                                    break;
+                            }
+                            @Html.DisplayFor(modelItem => narzedzie.Status)
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <h1 class="text-center mb-3 oswald_400">Lista zgłoszeń: @*@ViewBag.ImieNazwisko (@User.Identity?.Name)*@</h1>
+        <hr />
+        <div id="lista-zgloszen-container3">
+            @await Html.PartialAsync("_AwariePartialView", Model)
+    </div>
+
+
+        <!--  Canvas w osobnej kolumnie z odpowiednimi klasami -->
+        <div class="row justify-content-center justify-text-center mb-5 chart-column" style="display: none;">
+            <div class="col-md-6">
+                <canvas id="myChart" style="width: 0%; height: 0px;"></canvas>
+            </div>
+            <div class="col-md-6">
+                <canvas id="myChartNarzedzia" style="width: 0%; height: 0px;"></canvas>
+            </div>
+
+            <div>
+            </div>
+        </div>
+
+    }
+
+
+}
+
+
+
+
+
+
+
+        @section Scripts{
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/datatables.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/b-2.3.3/b-html5-2.3.3/b-print-2.3.3/sp-2.1.0/datatables.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#tools').DataTable({
+                    pageLength: 50,
+                    language: {
+                        "decimal": "",
+                        "emptyTable": "Brak danych do wyświetlenia",
+                        "info": " Pozycje od _START_ do _END_ z _TOTAL_ rekordów",
+                        "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                        "infoFiltered": "(filtrowanie z _MAX_ dostępnych pozycji)",
+                        "infoPostFix": "",
+                        "thousands": " ",
+                        "lengthMenu": "Pokaż _MENU_ pozycji",
+                        "loadingRecords": "Ładowanie...",
+                        "processing": "Przetwarzanie...",
+                        "search": "Wyszukaj:",
+                        "zeroRecords": "Nie znaleziono danych",
+                        "paginate": {
+                            "first": "Pierwsza",
+                            "last": "Ostatnia",
+                            "next": "Następna",
+                            "previous": "Poprzednia"
+                        },
+                        "aria": {
+                            "sortAscending": ": sortuje kolumnę rosnąco",
+                            "sortDescending": ": sortuje kolumnę malejąco"
+                        }
+                    }
+                   
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('#awarie').DataTable({
+                    pageLength: 50,
+                    language: {
+                        "decimal": "",
+                        "emptyTable": "Brak danych do wyświetlenia",
+                        "info": " Pozycje od _START_ do _END_ z _TOTAL_ rekordów",
+                        "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                        "infoFiltered": "(filtrowanie z _MAX_ dostępnych pozycji)",
+                        "infoPostFix": "",
+                        "thousands": " ",
+                        "lengthMenu": "Pokaż _MENU_ pozycji",
+                        "loadingRecords": "Ładowanie...",
+                        "processing": "Przetwarzanie...",
+                        "search": "Wyszukaj:",
+                        "zeroRecords": "Nie znaleziono danych",
+                        "paginate": {
+                            "first": "Pierwsza",
+                            "last": "Ostatnia",
+                            "next": "Następna",
+                            "previous": "Poprzednia"
+                        },
+                        "aria": {
+                            "sortAscending": ": sortuje kolumnę rosnąco",
+                            "sortDescending": ": sortuje kolumnę malejąco"
+                        }
+                    }
+                    
+                   
+
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('#awarie1').DataTable({
+                    pageLength: 50,
+                    language: {
+                        "decimal": "",
+                        "emptyTable": "Brak danych do wyświetlenia",
+                        "info": " Pozycje od _START_ do _END_ z _TOTAL_ rekordów",
+                        "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                        "infoFiltered": "(filtrowanie z _MAX_ dostępnych pozycji)",
+                        "infoPostFix": "",
+                        "thousands": " ",
+                        "lengthMenu": "Pokaż _MENU_ pozycji",
+                        "loadingRecords": "Ładowanie...",
+                        "processing": "Przetwarzanie...",
+                        "search": "Wyszukaj:",
+                        "zeroRecords": "Nie znaleziono danych",
+                        "paginate": {
+                            "first": "Pierwsza",
+                            "last": "Ostatnia",
+                            "next": "Następna",
+                            "previous": "Poprzednia"
+                        },
+                        "aria": {
+                            "sortAscending": ": sortuje kolumnę rosnąco",
+                            "sortDescending": ": sortuje kolumnę malejąco"
+                        }
+                    }
+                
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('#awarie2').DataTable({
+                    pageLength: 50,
+                    language: {
+                        "decimal": "",
+                        "emptyTable": "Brak danych do wyświetlenia",
+                        "info": " Pozycje od _START_ do _END_ z _TOTAL_ rekordów",
+                        "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                        "infoFiltered": "(filtrowanie z _MAX_ dostępnych pozycji)",
+                        "infoPostFix": "",
+                        "thousands": " ",
+                        "lengthMenu": "Pokaż _MENU_ pozycji",
+                        "loadingRecords": "Ładowanie...",
+                        "processing": "Przetwarzanie...",
+                        "search": "Wyszukaj:",
+                        "zeroRecords": "Nie znaleziono danych",
+                        "paginate": {
+                            "first": "Pierwsza",
+                            "last": "Ostatnia",
+                            "next": "Następna",
+                            "previous": "Poprzednia"
+                        },
+                        "aria": {
+                            "sortAscending": ": sortuje kolumnę rosnąco",
+                            "sortDescending": ": sortuje kolumnę malejąco"
+                        }
+                    }
+               
+                });
+            });
+        </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.hover-card').hover(
+                function () {
+                    $(this).addClass('hover');
+                },
+                function () {
+                    $(this).removeClass('hover');
+                }
+            );
+        });
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+
+
+    @{
+        
+        // Pobierz dane
+        var noweAwarie = ViewBag.NoweAwarie as int? ?? 0;
+        var awarieRealizacja = ViewBag.AwarieRealizacja as int? ?? 0;
+        var awarieOczekujace = ViewBag.AwarieOczekujace as int? ?? 0;
+        var awarieZakonczone = ViewBag.AwarieZakonczone as int? ?? 0;
+
+        // Utwórz listę dla etykiet i danych
+        var labels = new List<string> { "Nowe", "Realizowane", "Oczekujące", "Zakończone" };
+        var data = new List<int> { noweAwarie, awarieRealizacja, awarieOczekujace, awarieZakonczone };
+
+        
+    }
+    <script src="../dist/modules/chart.min.js"></script>
+    <script>
+        var isDarkMode = localStorage.getItem('isDarkMode') === 'true';
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(labels)), // Serializuj etykiety jako tablicę JSON
+                datasets: [{
+                    label: 'Statystyki awarii',
+                    data: @Html.Raw(Json.Serialize(data)), // Serializuj dane jako tablicę JSON
+                    borderWidth: 2,
+                    backgroundColor: '#574B90',
+                    borderColor: '#574B90',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#ffffff',
+                    pointRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: isDarkMode ? '#ffffff' : '#000000',
+                            font: {
+                                size: 18
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            color: isDarkMode ? '#ffffff' : '#000000',
+                            font: {
+                                size: 18
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: isDarkMode ? '#ffffff' : '#000000',
+                            font: {
+                                size: 18
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    @{
+        // Pobierz dane
+        var przyjete = ViewBag.Przyjete as int? ?? 0;
+        var uzywane = ViewBag.Uzywane as int? ?? 0;
+        var naprawiane = ViewBag.Naprawiane as int? ?? 0;
+        var zlikwidowane = ViewBag.Zlikwidowane as int? ?? 0;
+
+        // Utwórz listę dla etykiet i danych
+        var labelsNarzedzia = new List<string> { "Przyjęte", "Używane", "Naprawiane", "Zlikwidowane" };
+        var dataNarzedzia = new List<int> { przyjete, uzywane, naprawiane, zlikwidowane };
+    }
+    <script>
+        var isDarkMode = localStorage.getItem('isDarkMode') === 'true';
+        var ctxNarzedzia = document.getElementById("myChartNarzedzia").getContext('2d');
+        var myChartNarzedzia = new Chart(ctxNarzedzia, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(labelsNarzedzia)), // Serializuj etykiety jako tablicę JSON
+                datasets: [{
+                    label: 'Statystyki narzędzi',
+                    data: @Html.Raw(Json.Serialize(dataNarzedzia)), // Serializuj dane narzędzi jako tablicę JSON
+                    borderWidth: 2,
+                    backgroundColor: 'rgb(87,75,144)',
+                    borderColor: 'rgb(87,75,144)',
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#ffffff',
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: isDarkMode ? '#ffffff' : '#000000',
+                            font: {
+                                size: 18
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            color: isDarkMode ? '#ffffff' : '#000000',
+                            font: {
+                                size: 18
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: isDarkMode ? '#ffffff' : '#000000',
+                            font: {
+                                size: 18
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+    </script>
+  <script>
+        // Funkcja do aktualizacji wykresów
+        function updateChartsForMode(isDarkMode) {
+            // Zaktualizuj kolory wykresu awarii
+            myChart.options.plugins.legend.labels.color = isDarkMode ? '#ffffff' : '#000000';
+            myChart.options.scales.x.ticks.color = isDarkMode ? '#ffffff' : '#000000';
+            myChart.options.scales.y.ticks.color = isDarkMode ? '#ffffff' : '#000000';
+            myChart.options.scales.x.grid.color = isDarkMode ? 'darkgrey' : 'lightgrey';
+            myChart.options.scales.y.grid.color = isDarkMode ? 'darkgrey' : 'lightgrey';
+            myChart.update();
+
+            // Zaktualizuj kolory wykresu narzędzi
+            myChartNarzedzia.options.plugins.legend.labels.color = isDarkMode ? '#ffffff' : '#000000';
+            myChartNarzedzia.options.scales.x.ticks.color = isDarkMode ? '#ffffff' : '#000000';
+            myChartNarzedzia.options.scales.y.ticks.color = isDarkMode ? '#ffffff' : '#000000';
+            myChartNarzedzia.options.scales.x.grid.color = isDarkMode ? 'darkgrey' : 'lightgrey';
+            myChartNarzedzia.options.scales.y.grid.color = isDarkMode ? 'darkgrey' : 'lightgrey';
+            myChartNarzedzia.update();
+        
+        }
+
+        // Modyfikacja istniejącej funkcji applyMode aby uwzględnić aktualizację wykresów
+        function applyMode(isDarkMode) {
+            var body = document.body;
+            var darkModeStylesheet = document.getElementById("dark-mode-stylesheet");
+            darkModeStylesheet.disabled = !isDarkMode;
+
+            if (isDarkMode) {
+                body.classList.add("dark-mode");
+            } else {
+                body.classList.remove("dark-mode");
+            }
+
+            // Aktualizacja wykresów
+            updateChartsForMode(isDarkMode);
+
+            // Dodatkowe obsługi dla tabel, jeżeli jest to potrzebne
+            var tables = document.querySelectorAll(".data-table");
+            tables.forEach(function (table) {
+                table.classList.toggle("table-dark", isDarkMode);
+                table.classList.toggle("table-light", !isDarkMode);
+            });
+        }
+
+</script>
+    <script>
+        $(document).ready(function () {
+            function refreshPartialView() {
+                $.get('@Url.Action("PobierzZgloszenia", "Home")', function (data) {
+                    $('#lista-zgloszen-container1').html(data);
+                    // Przeniesienie setTimeout do funkcji zwrotnej $.get
+                    setTimeout(refreshPartialView, 10000); // Ponowne uruchomienie funkcji po pobraniu danych
+                });
+            }
+
+            // Uruchom funkcję odświeżania na starcie
+            refreshPartialView();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            function refreshPartialView() {
+                $.get('@Url.Action("PobierzZgloszenia", "Home")', function (data) {
+                    $('#lista-zgloszen-container2').html(data);
+                    // Przeniesienie setTimeout do funkcji zwrotnej $.get
+                    setTimeout(refreshPartialView, 10000); // Ponowne uruchomienie funkcji po pobraniu danych
+                });
+            }
+
+            // Uruchom funkcję odświeżania na starcie
+            refreshPartialView();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            function refreshPartialView() {
+                $.get('@Url.Action("PobierzZgloszenia", "Home")', function (data) {
+                    $('#lista-zgloszen-container3').html(data);
+                    // Przeniesienie setTimeout do funkcji zwrotnej $.get
+                    setTimeout(refreshPartialView, 10000); // Ponowne uruchomienie funkcji po pobraniu danych
+                });
+            }
+
+            // Uruchom funkcję odświeżania na starcie
+            refreshPartialView();
+        });
+    </script>
+   
+
+}
+    
+
+ 

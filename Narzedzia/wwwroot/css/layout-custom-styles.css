@@ -1,0 +1,36 @@
+﻿/* Dodaj cienie do nagłówka */
+.logo {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Dodaj animację do przycisku "Przełącz tryb" */
+.toggle-dark-mode {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dodaj cienie do elementów nawigacyjnych */
+.navbar-nav .nav-link {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Dodaj cienie do stopki */
+.footer {
+    box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+    /* Dodaj animację do linków w stopce */
+    .footer a {
+        transition: color 0.3s ease;
+    }
+
+        /* Dodaj cienie do elementów, na które najechuje myszką */
+        .navbar-nav .nav-item:hover,
+        .footer a:hover {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+.navbar-nav .nav-link:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}

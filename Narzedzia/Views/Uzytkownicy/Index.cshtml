@@ -1,0 +1,129 @@
+﻿@model IEnumerable<Narzedzia.Models.UserViewModel>
+
+@{
+    ViewData["Title"] = "Użytkownicy";
+}
+
+<h1 class="oswald_400 tools-header">Użytkownicy:</h1>
+<hr />
+<p>
+    <a asp-action="Create" class="btn btn-outline-success">Dodaj</a>
+    <a asp-action="ExportToExcel" class="btn btn-outline-warning">Eksportuj</a>
+
+</p>
+<table class="table" id="users">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Imię i nazwisko")
+            </th>
+            <th>
+                @Html.DisplayName("Login (email)")
+            </th>
+            <th>
+                @Html.DisplayName("Numer kontrolny")
+            </th>
+            <th>
+                @Html.DisplayName("Wydział")
+            </th>
+            <th>
+                @Html.DisplayName("Stanowisko")
+            </th>
+            <th>
+                @Html.DisplayName("Liczba narzędzi")
+            </th>
+            <th>
+                @Html.DisplayName("Rola")
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Imie_Nazwisko)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NrKontrolny)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Wydzial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stanowisko)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Liczba_narzedzi)
+                </td>
+                <td>
+                    @switch (item.Roles.FirstOrDefault())
+                    {
+                        case "admin":
+                            <i class="bi bi-circle-fill" style="color: var(--bs-primary);"></i>
+                            break;
+
+                        case "nadzor":
+                            <i class="bi bi-circle-fill" style="color: var(--bs-success);"></i>
+                            break;
+
+                        case "pracownik":
+                            <i class="bi bi-circle-fill" style="color: #abadaf;"></i>
+                            break;
+                    }
+                    @Html.DisplayFor(modelItem => item.Roles)
+                </td>
+                <td>
+                    <div class="btn-group btn-group-lg">
+
+                        <a asp-action="Edit" asp-route-id="@item.UserId" class="btn btn-outline-primary btn-sm" title="Edytuj"><i class="bi bi-pencil"></i></a>
+                        <a asp-action="Delete" asp-route-id="@item.UserId" class="btn btn-outline-danger btn-sm" title="Usuń"><i class="bi bi-trash"></i></a>
+                    </div>
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/b-2.3.3/b-html5-2.3.3/b-print-2.3.3/sp-2.1.0/datatables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#users').DataTable({
+                pageLength: 50,
+                language: {
+                "decimal": "",
+                "emptyTable": "Brak danych do wyświetlenia",
+                "info": " Pozycje od _START_ do _END_ z _TOTAL_ rekordów",
+                "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                "infoFiltered": "(filtrowanie z _MAX_ dostępnych pozycji)",
+                "infoPostFix": "",
+                "thousands": " ",
+                "lengthMenu": "Pokaż _MENU_ pozycji",
+                "loadingRecords": "Ładowanie...",
+                "processing": "Przetwarzanie...",
+                "search": "Wyszukaj:",
+                "zeroRecords": "Nie znaleziono danych",
+                "paginate": {
+                    "first": "Pierwsza",
+                    "last": "Ostatnia",
+                    "next": "Następna",
+                    "previous": "Poprzednia"
+                },
+                "aria": {
+                    "sortAscending": ": sortuje kolumnę rosnąco",
+                    "sortDescending": ": sortuje kolumnę malejąco"
+                }
+            }
+            });
+        });
+    </script>
+}

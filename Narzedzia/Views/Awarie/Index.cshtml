@@ -1,0 +1,204 @@
+﻿@model IEnumerable<Narzedzia.Models.Awaria>
+
+@{
+    ViewData["Title"] = "Lista zgłoszeń awarii";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+</head>
+<h1 class="tools-header">Lista zgłoszeń awarii:</h1>
+<p>
+
+    <a asp-action="Create" class="btn btn-outline-success">Dodaj</a>
+    <a asp-action="ExportToExcel" class="btn btn-outline-warning">Eksportuj</a>
+
+</p>
+<table class="table" id="awarie">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Opis awarii:")
+
+            </th>
+            <th>
+                @Html.DisplayName("Telefon kontaktowy:")
+
+            </th>
+            <th>
+                @Html.DisplayName("Data zgłoszenia:")
+            </th>
+            <th>
+                @Html.DisplayName("Status realizacji:")
+            </th>
+            <th>
+                @Html.DisplayName("Użytkownik zgłaszający:")
+            </th>
+            <th class="col-md-2">
+                @Html.DisplayName("Nazwa narzędzia:")
+            </th>
+            <th>
+                @Html.DisplayName("Użytkownik realizujący:")
+            </th>
+            <th>
+                @Html.DisplayName("Opcje:")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="col-md-2">
+                    @* @Html.DisplayFor(modelItem => item.DescriptionAwaria)*@
+                    @if (item.DescriptionAwaria.Length <= 40)
+                    {
+                        @Html.DisplayFor(modelItem => item.DescriptionAwaria)
+                    }
+                    else
+                    {
+                        @(item.DescriptionAwaria.Substring(0, 30) + "...")
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberAwaria)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataPrzyjecia)
+                </td>
+                <td class="col-md-1">
+                    @* @Html.DisplayFor(modelItem => item.Status)*@
+                    @switch (item.Status)
+                    {
+                        case StatusAwaria.nowe:
+                            <i class="bi bi-circle-fill" style="color: var(--bs-success);"></i>
+                            break;
+
+                        case StatusAwaria.realizacja:
+                            <i class="bi bi-circle-fill" style="color: var(--bs-primary);"></i>
+                            break;
+
+                        case StatusAwaria.zakończone:
+                            <i class="bi bi-circle-fill" style="color: var(--bs-secondary);"></i>
+                            break;
+
+                        case StatusAwaria.oczekujące:
+                            <i class="bi bi-circle-fill" style="color: var(--bs-warning);"></i>
+                            break;
+                    }
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Uzytkownicy.Email)
+                </td>
+                <td class="col-md-2">
+                    @Html.DisplayFor(modelItem => item.Narzedzie.Nazwa)
+                </td>
+                <td id="user-cell -@item.IdAwaria" class="col-md-2">
+                    <select class="form-control user-selector" data-url="@Url.Action("ZapiszUzytkownika", "Awarie")" data-id="@item.IdAwaria">
+                        <option value="">Wybierz użytkownika</option>
+                        @foreach (var user in ViewData["UserList"] as SelectList)
+                        {
+                            if (item.UzytkownikRealizujacyId == user.Value)
+                            {
+                                <option value="@user.Value" selected>@user.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@user.Value">@user.Text</option>
+                            }
+                        }
+                    </select>
+
+                    @* @Html.DisplayFor(ModelItem => item.UzytkownikRealizujacy.Email)*@
+                </td>
+                <td>
+                    <div class="btn-group btn-group-lg">
+                        <a asp-action="Details" asp-route-id="@item.IdAwaria" class="btn btn-outline-secondary btn-sm" title="Szczegóły"><i class="bi bi-info-square"></i></a>
+                        <a asp-action="Edit" asp-route-id="@item.IdAwaria" class="btn btn-outline-primary btn-sm" title="Edytuj"><i class="bi bi-pencil"></i></a>
+                        <a asp-action="Delete" asp-route-id="@item.IdAwaria" class="btn btn-outline-danger btn-sm" title="Usuń"><i class="bi bi-trash"></i></a>
+                    </div>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/b-2.3.3/b-html5-2.3.3/b-print-2.3.3/sp-2.1.0/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#awarie').DataTable({
+                pageLength: 50,
+                language: {
+                    "decimal": "",
+                    "emptyTable": "Brak danych do wyświetlenia",
+                    "info": " Pozycje od _START_ do _END_ z _TOTAL_ rekordów",
+                    "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                    "infoFiltered": "(filtrowanie z _MAX_ dostępnych pozycji)",
+                    "infoPostFix": "",
+                    "thousands": " ",
+                    "lengthMenu": "Pokaż _MENU_ pozycji",
+                    "loadingRecords": "Ładowanie...",
+                    "processing": "Przetwarzanie...",
+                    "search": "Wyszukaj:",
+                    "zeroRecords": "Nie znaleziono danych",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "last": "Ostatnia",
+                        "next": "Następna",
+                        "previous": "Poprzednia"
+                    },
+                    "aria": {
+                        "sortAscending": ": sortuje kolumnę rosnąco",
+                        "sortDescending": ": sortuje kolumnę malejąco"
+                    }
+                }
+            });
+        });
+
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.user-selector').on('change', function () {
+                var awariaId = $(this).data('id');
+                var selectedUserId = $(this).val();
+
+                $.ajax({
+                    url: $(this).data('url'),
+                    type: 'POST',
+                    data: { awariaId: awariaId, selectedUserId: selectedUserId },
+                    success: function (response) {
+                        if (response.success) {
+                            // Zaktualizuj zawartość komórki po stronie klienta.
+                            $('#user-cell-' + awariaId).text(selectedUserId);
+                        } else {
+                            // Obsłuż błąd w odpowiedni sposób.
+                            console.error(response.error);
+                        }
+                    },
+                    error: function (error) {
+                        // Obsłuż błąd w odpowiedni sposób.
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
+
+}
+

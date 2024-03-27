@@ -1,0 +1,33 @@
+﻿@model Narzedzia.Models.Stanowisko
+
+@{
+    ViewData["Title"] = "Dodaj stanowisko";
+}
+
+<h1 class="oswald_400 tools-header">Dodaj stanowisko:</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4 interspace">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NazwaStanowiska" class="control-label"></label>
+                <input asp-for="NazwaStanowiska" class="form-control" />
+                <span asp-validation-for="NazwaStanowiska" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Dodaj" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Powrót</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

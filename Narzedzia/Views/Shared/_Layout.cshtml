@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Narzędzia</title>
+    <!-- Usunięcie zbędnych duplikatów stylów i uporządkowanie linków do arkuszy CSS -->
+    <link rel="stylesheet" href="~/css/bootstrap_colors.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" id="light-mode-stylesheet" asp-append-version="true" />
+@*     <link rel="stylesheet" href="~/css/dark-mode.css" id="dark-mode-stylesheet" />
+ *@    <link rel="stylesheet" href="~/css/darkmode_test.css" id="dark-mode-stylesheet" />
+
+    <link rel="stylesheet" href="~/css/layout-custom-styles.css" />
+    <link rel="stylesheet" href="~/css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Oswald:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    @RenderSection("Styles", required: false)
+    <script src="~/js/main.js"></script>
+    
+   
+
+</head>
+<body id="scroll-container">
+    @if ((string)ViewData["Title"] != "Logowanie")
+    {
+        <header>
+            {
+
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-4 fixed-top">
+                <div class="container-fluid">
+                    <a class="navbar-brand inter_900 logo" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-wrench-adjustable-circle-fill"></i> Tool Inspection List</a>
+
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Home" asp-action="Pomoc"><i class="bi bi-info-circle"></i> Informacje</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Narzedzia" asp-action="ListGraphic"><i class="bi bi-tools"></i> Spis narzędzi</a>
+                            </li>
+
+
+
+                            @{
+                                if (User.IsInRole("pracownik"))
+                                {
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link text-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person-check"></i>Użytkownik</a>
+                                        <ul class="dropdown-menu">
+
+                                            <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Awarie" asp-action="Create"><i class="bi bi-ticket-detailed" ></i> Zgłoś awarię</a></li>
+
+                                        </ul>
+                                    </li>
+
+
+
+                                }
+                            }
+                            @{
+                                if (User.IsInRole("nadzor"))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-light" asp-controller="CalendarView" asp-action="CalendarVW"><i class="bi bi-calendar-week"></i> Kalendarz</a>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link text-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-shield-check"></i> Nadzór</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Narzedzia" asp-action="Index"><i class="bi bi-wrench-adjustable"></i> Narzędzia</a></li>
+                                            <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Kategorie" asp-action="Index"><i class="bi bi-card-checklist"></i> Kategorie</a></li>
+                                            <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Producenci" asp-action="Index"><i class="bi bi-boxes"></i> Producenci</a></li>
+                                            <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Awarie" asp-action="Index"><i class="bi bi-ticket-detailed"></i> Awarie</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+
+                                            <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Events" asp-action="Index"><i class="bi bi-calendar-week"></i> Wydarzenia dla kalendarza</a></li>
+
+                                        </ul>
+                                    </li>
+                                }
+                            }
+
+                            @{
+                                if (User.IsInRole("admin"))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-light" asp-controller="CalendarView" asp-action="CalendarVW"><i class="bi bi-calendar-week"></i> Kalendarz</a>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link text-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-gear"></i> Administracja</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Awarie" asp-action="Index"><i class="bi bi-ticket-detailed"></i> Awarie</a></li>
+                                            <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Narzedzia" asp-action="Index"><i class="bi bi-wrench-adjustable"></i> Narzędzia</a></li>
+                                            <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Kategorie" asp-action="Index"><i class="bi bi-card-checklist"></i> Kategorie</a></li>
+                                            <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Producenci" asp-action="Index"><i class="bi bi-boxes"></i> Producenci</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Uzytkownicy" asp-action="Index"><i class="bi bi-people"></i> Użytkownicy</a></li>
+                                            <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Wydzialy" asp-action="Index"><i class="bi bi-building"></i> Wydziały</a></li>
+                                            <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Stanowiska" asp-action="Index"><i class="bi bi-diagram-2-fill"></i> Stanowiska</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+
+                                            <li><a class="dropdown-item text-dark" asp-area="" asp-controller="Events" asp-action="Index"><i class="bi bi-calendar-week"></i> Wydarzenia dla kalendarza</a></li>
+
+                                            </ul>
+                                    </li>
+                                }
+                            }
+
+                            <button id="toggle-dark-mode" class="btn btn-dark inter_300 toggle-dark-mode"><b><i class="bi bi-square-half"></i> Przełącz tryb</b></button>
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    var isDarkMode = localStorage.getItem('isDarkMode') === 'true';
+                                    applyMode(isDarkMode);
+
+                                    document.getElementById("toggle-dark-mode").addEventListener("click", function () {
+                                        isDarkMode = !isDarkMode;
+                                        localStorage.setItem('isDarkMode', isDarkMode);
+                                        applyMode(isDarkMode);
+                                    });
+                                });
+
+                                function applyMode(isDarkMode) {
+                                    var body = document.body;
+                                    var darkModeStylesheet = document.getElementById("dark-mode-stylesheet");
+                                    darkModeStylesheet.disabled = !isDarkMode;
+
+                                    if (isDarkMode) {
+                                        body.classList.add("dark-mode");
+                                    } else {
+                                        body.classList.remove("dark-mode");
+                                    }
+
+                                    // Dodatkowe obsługi dla tabel, jeżeli jest to potrzebne
+                                    var tables = document.querySelectorAll(".data-table");
+                                    tables.forEach(function (table) {
+                                        table.classList.toggle("table-dark", isDarkMode);
+                                        table.classList.toggle("table-light", !isDarkMode);
+                                    });
+                                }
+
+                                // Funkcja do aktualizacji wykresów
+                                function updateChartsForMode(isDarkMode) {
+                                    // Zaktualizuj kolory wykresu awarii
+                                    myChart.options.plugins.legend.labels.color = isDarkMode ? '#ffffff' : '#000000';
+                                    myChart.options.scales.x.ticks.color = isDarkMode ? '#ffffff' : '#000000';
+                                    myChart.options.scales.y.ticks.color = isDarkMode ? '#ffffff' : '#000000';
+                                    myChart.options.scales.x.grid.color = isDarkMode ? 'darkgrey' : 'lightgrey';
+                                    myChart.options.scales.y.grid.color = isDarkMode ? 'darkgrey' : 'lightgrey';
+                                    myChart.update();
+
+                                    // Zaktualizuj kolory wykresu narzędzi
+                                    myChartNarzedzia.options.plugins.legend.labels.color = isDarkMode ? '#ffffff' : '#000000';
+                                    myChartNarzedzia.options.scales.x.ticks.color = isDarkMode ? '#ffffff' : '#000000';
+                                    myChartNarzedzia.options.scales.y.ticks.color = isDarkMode ? '#ffffff' : '#000000';
+                                    myChartNarzedzia.options.scales.x.grid.color = isDarkMode ? 'darkgrey' : 'lightgrey';
+                                    myChartNarzedzia.options.scales.y.grid.color = isDarkMode ? 'darkgrey' : 'lightgrey';
+                                    myChartNarzedzia.update();
+                                }
+
+                                // Modyfikacja istniejącej funkcji applyMode aby uwzględnić aktualizację wykresów
+                                function applyMode(isDarkMode) {
+                                    var body = document.body;
+                                    var darkModeStylesheet = document.getElementById("dark-mode-stylesheet");
+                                    darkModeStylesheet.disabled = !isDarkMode;
+
+                                    if (isDarkMode) {
+                                        body.classList.add("dark-mode");
+                                    } else {
+                                        body.classList.remove("dark-mode");
+                                    }
+
+                                    // Aktualizacja wykresów
+                                    updateChartsForMode(isDarkMode);
+
+                                    // Dodatkowe obsługi dla tabel, jeżeli jest to potrzebne
+                                    var tables = document.querySelectorAll(".data-table");
+                                    tables.forEach(function (table) {
+                                        table.classList.toggle("table-dark", isDarkMode);
+                                        table.classList.toggle("table-light", !isDarkMode);
+                                    });
+                                }
+                            </script>
+                            
+                            
+                         
+
+
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+        </header>
+    }
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var isDarkMode = localStorage.getItem('isDarkMode') === 'true';
+            applyMode(isDarkMode);
+
+            document.getElementById("toggle-dark-mode").addEventListener("click", function () {
+                isDarkMode = !isDarkMode;
+                localStorage.setItem('isDarkMode', isDarkMode);
+                applyMode(isDarkMode);
+            });
+        });
+
+        function applyMode(isDarkMode) {
+            var body = document.body;
+            var darkModeStylesheet = document.getElementById("dark-mode-stylesheet");
+            darkModeStylesheet.disabled = !isDarkMode;
+
+            if (isDarkMode) {
+                body.classList.add("dark-mode");
+            } else {
+                body.classList.remove("dark-mode");
+            }
+
+            // Dodatkowe obsługi dla tabel, jeżeli jest to potrzebne
+            var tables = document.querySelectorAll(".data-table");
+            tables.forEach(function (table) {
+                table.classList.toggle("table-dark", isDarkMode);
+                table.classList.toggle("table-light", !isDarkMode);
+            });
+        }
+    </script>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; @DateTime.Now.Year - Tool Inspection List for <a href="https://www.cnhindustrialcapital.com/pl_pl">CNH Industrial Polska Sp. z o.o.</a>
+        </div>
+    </footer>
+</body>
+
+
+
+</html>
+

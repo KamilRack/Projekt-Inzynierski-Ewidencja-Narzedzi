@@ -1,0 +1,41 @@
+﻿@model Narzedzia.Models.Producent
+
+@{
+    ViewData["Title"] = "Usuwanie producenta";
+}
+
+<h1 class="oswald_400 tools-header">Usuwanie producenta:</h1>
+
+@{
+    if (!String.IsNullOrEmpty(ViewBag.DeleteMessage))
+    {
+    <h5 class="alert alert-info" role="alert"><i class="bi-info-circle"></i>&nbsp; @ViewBag.DeleteMessage</h5>
+    }
+    else
+    {
+    <h5 class="alert alert-danger" role="alert"><i class="bi-exclamation-triangle"></i>&nbsp; Czy na pewno usunąć tego producenta?</h5>
+    }
+    }
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NazwaProducenta)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NazwaProducenta)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+
+        @{
+            if (String.IsNullOrEmpty(ViewBag.DeleteMessage))
+            {
+                    <input type="hidden" asp-for="ProducentId" />
+                    <input type="submit" value="Usuń" class="btn btn-danger" />
+            }
+        }
+        <a asp-action="Index" class="btn btn-secondary">Powrót do listy</a>
+    </form>
+</div>

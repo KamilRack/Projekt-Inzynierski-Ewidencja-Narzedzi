@@ -1,0 +1,35 @@
+﻿@model Narzedzia.Models.Kategoria
+
+@{
+    ViewData["Title"] = "Edycja kategorii";
+}
+
+<h1 class="oswald_400 tools-header">Edycja kategorii:</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4 interspace">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="KategoriaId" />
+            <div class="form-group">
+                <label asp-for="NazwaKategorii" class="control-label"></label>
+                <input asp-for="NazwaKategorii" class="form-control" />
+                <span asp-validation-for="NazwaKategorii" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Zapisz zmiany" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-light">Powrót do listy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

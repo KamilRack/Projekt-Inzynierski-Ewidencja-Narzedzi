@@ -1,0 +1,119 @@
+﻿@model IEnumerable<Narzedzia.Models.Events>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="form-header tools-header oswald_400">Lista wydarzeń:</h1>
+@if (ViewData["Alert"] != null)
+{
+    <h3>@ViewData["Alert"]</h3>
+}
+<p>
+    <a asp-action="Create" class="btn btn-outline-success">Dodaj wydarzenie</a>
+    <a asp-action="ExportToExcel" class="btn btn-outline-warning">Eksportuj</a>
+
+</p>
+<table class="table" id="events">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NameCal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DescriptionCal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartCal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndCal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Wydzial.NazwaWydzialu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Narzedzie.Nazwa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stanowisko.NazwaStanowiska)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameCal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DescriptionCal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartCal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndCal)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Wydzial.NazwaWydzialu)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Narzedzie.Nazwa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stanowisko.NazwaStanowiska)
+                </td>
+            <td>
+                    <div class="btn-group btn-group-lg">
+
+                        <a asp-action="Details" asp-route-id="@item.IdCal" class="btn btn-outline-secondary btn-sm" title="Szczegóły"><i class="bi bi-info-square"></i></a>
+                        <a asp-action="Edit" asp-route-id="@item.IdCal" class="btn btn-outline-primary btn-sm" title="Edytuj"><i class="bi bi-pencil"></i></a>
+                        <a asp-action="Delete" asp-route-id="@item.IdCal" class="btn btn-outline-danger btn-sm" title="Usuń"><i class="bi bi-trash"></i></a>
+                    </div>
+                </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@section Scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/b-2.3.3/b-html5-2.3.3/b-print-2.3.3/sp-2.1.0/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#events').DataTable({
+                pageLength: 50,
+                language: {
+                    "decimal": "",
+                    "emptyTable": "Brak danych do wyświetlenia",
+                    "info": " Pozycje od _START_ do _END_ z _TOTAL_ rekordów",
+                    "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                    "infoFiltered": "(filtrowanie z _MAX_ dostępnych pozycji)",
+                    "infoPostFix": "",
+                    "thousands": " ",
+                    "lengthMenu": "Pokaż _MENU_ pozycji",
+                    "loadingRecords": "Ładowanie...",
+                    "processing": "Przetwarzanie...",
+                    "search": "Wyszukaj:",
+                    "zeroRecords": "Nie znaleziono danych",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "last": "Ostatnia",
+                        "next": "Następna",
+                        "previous": "Poprzednia"
+                    },
+                    "aria": {
+                        "sortAscending": ": sortuje kolumnę rosnąco",
+                        "sortDescending": ": sortuje kolumnę malejąco"
+                    }
+                }
+            });
+        });
+
+
+    </script>
+}

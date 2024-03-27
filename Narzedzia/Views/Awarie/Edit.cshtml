@@ -1,0 +1,180 @@
+﻿@model Narzedzia.Models.Awaria
+
+@{
+    ViewData["Title"] = "Edycja awarii";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet" href="~/css/AwarieStyle.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy2Bkpz4uXu6sAPe5+aDhD5Pj9bpkNkJL4" crossorigin="anonymous">
+
+    <style>
+        /* Dodaj poniższy styl CSS do zrównania wysokości karty na lewej i prawej stronie */
+        .card-edit {
+            min-height: 500px; /* Możesz dostosować tę wartość do potrzeb */
+        }
+
+        .btn-editmargin
+        {
+            margin-top: 10px;
+        }
+       
+    </style>
+
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4 oswald_400 tools-header" style="font-size: 2.5em;">Edycja awarii:</h1>
+    </div>
+    <form asp-action="Edit" method="post">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-edit">
+                    <div class="card-body card-custom">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="IdAwaria" />
+
+                    <div class="mb-3">
+                        <label asp-for="NarzedzieId" class="control-label">Narzędzie:</label>
+                        <select asp-for="NarzedzieId" class="form-control" asp-items="ViewBag.NarzedzieId"></select>
+                        <span asp-validation-for="NarzedzieId" class="text-danger"></span>
+                    </div>
+                <div class="mb-3">
+                    <label asp-for="DescriptionAwaria" class="control-label">Opis awarii:</label>
+                    <input asp-for="DescriptionAwaria" class="form-control" />
+                    <span asp-validation-for="DescriptionAwaria" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="NumberAwaria" class="control-label">Nr. telefonu kontaktowego:</label>
+                    <input asp-for="NumberAwaria" class="form-control" />
+                    <span asp-validation-for="NumberAwaria" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="DataPrzyjecia" class="control-label">Data zgłoszenia:</label>
+                    <input asp-for="DataPrzyjecia" class="form-control" />
+                    <span asp-validation-for="DataPrzyjecia" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="UzytkownikId" class="control-label">Obecny użytkownik:</label>
+                    <input for="obecny_name" id="obecny_name" name="obecny_name" class="form-control mb-1" disabled value="@ViewBag.Obecny" />
+                    <input type="hidden" id="obecny" name="obecny" class="form-control" value="@ViewBag.ObecnyId" />
+                    <button type="button" onclick="clear_user()" class="btn btn-outline-danger btn-sm"><i class="bi bi-x-circle-fill"></i> Usuń przypisanie</button>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+                <div class="card card-edit card-custom">
+                <div class="card-body">
+                @if (!(@ViewBag.Obecny == null))
+                {
+                    <div class="mb-3" id="nowy_user" style="display: none">
+                        <label asp-for="UzytkownikId" class="control-label">Nowy użytkownik:</label><br />
+                        <select asp-for="UzytkownikId" class="form-control" asp-items="ViewBag.UzytkownikId"></select>
+                        <span asp-validation-for="UzytkownikId" class="text-danger"></span>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-3" id="nowy_user">
+                        <label asp-for="UzytkownikId" class="control-label">Nowy użytkownik:</label><br />
+                        <select asp-for="UzytkownikId" class="form-control" asp-items="ViewBag.UzytkownikId"></select>
+                        <span asp-validation-for="UzytkownikId" class="text-danger"></span>
+                    </div>
+                }
+
+                <div class="mb-3">
+                    <label asp-for="Status" class="control-label">Status:</label>
+                    <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<Narzedzia.Models.StatusAwaria>()"></select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="UzytkownikRealizujacyId" class="control-label">Użytkownik realizujący:</label>
+                    <select asp-for="UzytkownikRealizujacyId" class="form-control" asp-items="ViewBag.UzytkownikId"></select>
+                    <span asp-validation-for="UzytkownikRealizujacyId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="StanowiskoId" class="control-label">Stanowisko:</label>
+                    <select asp-for="StanowiskoId" class="form-control" asp-items="@ViewBag.StanowiskaList"></select>
+                    <span asp-validation-for="StanowiskoId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="WydzialId" class="control-label">Wydział:</label>
+                    <select asp-for="WydzialId" class="form-control" asp-items="@ViewBag.WydzialyList"></select>
+                    <span asp-validation-for="WydzialId" class="text-danger"></span>
+                </div>
+                    <div class="mb-3">
+                        <label asp-for="NotatkaTechniczna" class="control-label">Notatka techniczna:</label>
+                        <input asp-for="NotatkaTechniczna" class="form-control" />
+                        <span asp-validation-for="NotatkaTechniczna" class="text-danger"></span>
+
+                    </div>
+
+                   
+
+                    @if (!string.IsNullOrEmpty(ViewBag.Obecny))
+                    {
+                        <div class="mb-3" id="nowy_user" style="display: none">
+                            <!-- Nowy użytkownik -->
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mb-3" id="nowy_user">
+                            <!-- Nowy użytkownik -->
+                        </div>
+                    }
+
+                        
+    
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="mb-3">
+            <input type="submit" value="Zapisz zmiany" class="btn btn-primary btn-block btn-editmargin" />
+        </div>
+    </form>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            $('#UzytkownikId').prepend('<option selected></option>').select2({
+                placeholder: "Wybierz użytkownika",
+                allowClear: true
+            });
+        });
+    </script>
+
+    <script>
+        function clear_user() {
+            document.getElementById("obecny").value = '';
+            document.getElementById("obecny_name").value = '';
+            $("#nowy_user").show();
+        }
+    </script>
+
+    
+</body>
+</html>

@@ -1,0 +1,263 @@
+body {
+    margin-bottom: 60px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    background-color: #ffffff; /* Kolor t³a */
+    color: #000000; /* Kolor tekstu */
+}
+
+.text-danger
+{
+    margin-top: 40px;
+}
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.tools-header {
+    padding-top: 40px; /* Dostosuj wartoœæ marginesu do wysokoœci paska nawigacyjnego */
+    font-family: 'Oswald';
+    font-weight: 500;
+    color: #000000; /* Kolor tekstu */
+}
+
+#tools-header {
+    color: #000000; /* Kolor tekstu */
+}
+
+#lista-zgloszen-awarii {
+    margin-top: 100px; /* Dostosuj wartoœæ marginesu wed³ug potrzeb */
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+#cardContainer {
+    height: 100%;
+}
+.card-img-top {
+    object-fit: cover;
+    height: 400px; /* Rozmiar zdjêcia na stronie "Narzêdzia" */
+}
+.details-image
+{
+    height: 400px;
+    align-content: center;
+}
+#details-image {
+    height: 400px;
+    align-content: center;
+}
+.thumbnail-img {
+    max-width: 100px; /* Rozmiar miniatury zdjêcia */
+}
+.form-control {
+    font-size: 20px;
+}
+}
+.form-control {
+    font-size: 20px;
+}
+.oswald_300 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 300;
+}
+
+.oswald_400 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+}
+
+.oswald_700 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+}
+
+.inter_300 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+}
+
+.inter_400 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+}
+
+.inter_700 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+}
+
+.inter_900 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+}
+
+.interspace div {
+    margin-bottom: 1em;
+}
+
+.smaller {
+    font-size: 0.875em;
+}
+
+.cd {
+    text-align: center;
+    padding: 0;
+}
+
+.cb-p {
+    background-color: #abadaf;
+    border-top-left-radius: .375rem;
+    border-top-right-radius: .375rem;
+    font-size: 4rem;
+    color: white;
+    border-color: black;
+}
+
+.cb-u {
+    background-color: var(--bs-success);
+    border-top-left-radius: .375rem;
+    border-top-right-radius: .375rem;
+    font-size: 4rem;
+    color: white;
+    border-color: black;
+}
+
+.cb-n {
+    background-color: var(--bs-primary);
+    border-top-left-radius: .375rem;
+    border-top-right-radius: .375rem;
+    font-size: 4rem;
+    color: white;
+    border-color: black;
+}
+
+.cb-z {
+    background-color: var(--bs-secondary);
+    border-top-left-radius: .375rem;
+    border-top-right-radius: .375rem;
+    font-size: 4rem;
+    color: white;
+    border-color: black;
+}
+
+.cb-e {
+    background-color: var(--bs-secondary);
+    color: white;
+    border-color: black;
+}
+
+.cb-q {
+    background-color: var(--bs-success);
+    color: white;
+    border-color: black;
+}
+
+.cb-w {
+    background-color: var(--bs-primary);
+    color: white;
+    border-color: black;
+}
+
+.cb-r {
+    background-color: #abadaf;
+    color: white;
+    border-color: black;
+}
+
+
+
+.container {
+    margin-bottom: -45px;
+}
+
+.btn-user {
+    border-bottom: solid 8px var(--bs-primary);
+}
+
+dt {
+    margin-bottom: 1rem;
+}
+
+dd {
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+    dt {
+        margin-bottom: 0;
+    }
+}
+.container
+{
+    margin-bottom: 30px;
+}
+body {
+}
+
+.card {
+    border-color: black;
+    font-weight: bold;
+
+}
+
+
+/* Style dla trybu ciemnego */
+#calendar {
+    background-color: white;
+    color: black;
+}
+
+/* Zmiana koloru tekstu dla sobót */
+.fc-day-sat .fc-daygrid-day-number {
+    color: black;
+}
+
+.fc-day-sat {
+    background-color: lightgray; /* Ciemny szary - przyk³ad */
+}
+
+/* Zmiana koloru t³a dla niedziel */
+.fc-day-sun {
+    background-color: lightgray; /* Ciemny szary - przyk³ad */
+}
+    /* Zmiana koloru tekstu dla niedziel */
+    .fc-day-sun .fc-daygrid-day-number {
+        color: black;
+    }
+
+/* Zmiana koloru numerów dni */
+.fc-daygrid-day-number {
+    color: black;
+}
+/* Stylizacja stopki karty */
+.card-footer {
+    background-color: #f8f9fa;
+    padding: 10px;
+    text-align: center;
+    font-weight: 800;
+    font-size: 1.5em;
+}
+/* Zmiana koloru nazw dni tygodnia */
+.fc-col-header-cell-cushion {
+    color: black;
+}
+
+.multi-day-event {
+    color: black; /* Czarny tekst dla lepszej czytelnoœci */
+    background-color: dodgerblue !important;
+    font-weight: bold !important;
+    font-size: 15px !important;
+}
+.single-day-event {
+    font-weight: bold !important;
+    font-size: 15px !important;
+}

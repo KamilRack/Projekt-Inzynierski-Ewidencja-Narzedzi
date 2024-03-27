@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Narzedzia.Models.Wydzial>
+
+@{
+    ViewData["Title"] = "Wydziały";
+}
+
+<h1 class="oswald_400 tools-header">Wydziały:</h1>
+<hr />
+<p>
+    <a asp-action="Create" class="btn btn-outline-success">Dodaj</a>
+    <a asp-action="ExportToExcel" class="btn btn-outline-warning">Eksportuj</a>
+
+</p>
+<table class="table" id="wydzial">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NazwaWydzialu)
+            </th>
+            <th>
+                @Html.DisplayName("Liczba pracowników:")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NazwaWydzialu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Uzytkownicy.Count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+                    <div class="btn-group btn-group-lg">
+
+                        <a asp-action="Edit" asp-route-id="@item.WydzialId" class="btn btn-outline-primary btn-sm" title="Edytuj"><i class="bi bi-pencil"></i></a>
+                        <a asp-action="Delete" asp-route-id="@item.WydzialId" class="btn btn-outline-danger btn-sm" title="Usuń"><i class="bi bi-trash"></i></a>
+                </div>
+            </td>
+        </tr>
+          
+}
+    </tbody>
+</table>
+
+@section Scripts{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/b-2.3.3/b-html5-2.3.3/b-print-2.3.3/sp-2.1.0/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#wydzial').DataTable({
+                pageLength: 50,
+                language: {
+                    "decimal": "",
+                    "emptyTable": "Brak danych do wyświetlenia",
+                    "info": " Pozycje od _START_ do _END_ z _TOTAL_ rekordów",
+                    "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                    "infoFiltered": "(filtrowanie z _MAX_ dostępnych pozycji)",
+                    "infoPostFix": "",
+                    "thousands": " ",
+                    "lengthMenu": "Pokaż _MENU_ pozycji",
+                    "loadingRecords": "Ładowanie...",
+                    "processing": "Przetwarzanie...",
+                    "search": "Wyszukaj:",
+                    "zeroRecords": "Nie znaleziono danych",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "last": "Ostatnia",
+                        "next": "Następna",
+                        "previous": "Poprzednia"
+                    },
+                    "aria": {
+                        "sortAscending": ": sortuje kolumnę rosnąco",
+                        "sortDescending": ": sortuje kolumnę malejąco"
+                    }
+                }
+            });
+        });
+    </script>
+}

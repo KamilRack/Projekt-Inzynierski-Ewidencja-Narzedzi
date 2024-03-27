@@ -1,0 +1,11 @@
+﻿// scss-docs-start color-variables
+//$blue: #245CA6 !default;
+//$red: #8C4C27 !default;
+//$yellow: #EAAC29 !default;
+//$green: #25592C !default;
+//$cyan: #21C0D3 !default;
+// scss-docs-end color-variable
+
+$container-max-widths: ( sm: 540px, md: 720px, lg: 960px, xl: 1140px, xxl: 1520px );
+
+@import "../lib/bootstrap/dist/scss/bootstrap.scss";

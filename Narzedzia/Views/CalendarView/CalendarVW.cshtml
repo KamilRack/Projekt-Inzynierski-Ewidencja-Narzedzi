@@ -1,0 +1,107 @@
+﻿@{
+    ViewData["Title"] = "Kalendarz";
+}
+<head>
+
+</head>
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: @Html.Raw(ViewData["Events"]),
+            resources: @Html.Raw(ViewData["Resources"]),
+            nowIndicator: true, // Pokazuje wskaźnik "teraz"
+            locale: 'pl', // Ustawienie języka na polski
+            headerToolbar: {
+                left: 'today prev,next',
+                center: 'title',
+                right: 'timeGridWeek,dayGridMonth,listMonth'
+            },
+            buttonText: {
+                today: 'Dziś',
+                month: 'Miesiąc',
+                week: 'Tydzień',
+                day: 'Dzień',
+                list: 'Lista'
+            },
+            slotLabelFormat: {
+                hour: 'numeric',
+                minute: '2-digit',
+                omitZeroMinute: false,
+                meridiem: 'short'
+            },
+            eventTimeFormat: {
+                hour: 'numeric',
+                minute: '2-digit',
+                meridiem: 'short'
+            },
+            eventDisplay: 'block', // Możesz dostosować sposób wyświetlania wydarzeń
+            dayMaxEventRows: true, // Ogranicza ilość wydarzeń wyświetlanych na jednym dniu
+            eventMouseEnter: function (info) {
+                var popover = new bootstrap.Popover(info.el, {
+                    content: '<strong>Tytuł: ' + info.event.title + '<br>Opis: ' + info.event.extendedProps.description + '</strong><br>Początek: ' + info.event.start.toLocaleString() + '<br>Koniec: ' + info.event.end.toLocaleString(),
+                    trigger: 'hover',
+                    placement: 'auto',
+                    html: true
+                });
+                info.el.classList.add('fc-enter');
+                info.el.style.cursor = 'pointer';
+            },
+            eventMouseLeave: function (info) {
+                bootstrap.Popover.getInstance(info.el).dispose();
+                info.el.classList.remove('fc-enter');
+                info.el.style.cursor = '';
+            },
+            eventClick: function (info) {
+                var eventId = info.event.id;
+                window.open('/Events/Details/' + eventId, '_blank');
+            },
+            eventClassNames: function (arg) {
+                if (arg.event.end && arg.event.start) {
+                    if (arg.event.end.getDate() - arg.event.start.getDate() === 0) {
+                        // Wydarzenie trwające jeden dzień
+                        return 'single-day-event';
+                    } else {
+                        // Wydarzenie trwające dłużej niż jeden dzień
+                        return 'multi-day-event';
+                    }
+                }
+                return ''; // Zwróć pusty ciąg znaków w przypadku problemu z datami
+            },
+            firstDay: 1, // Ustawienie pierwszego dnia tygodnia na poniedziałek
+
+           
+        });
+        function refreshCalendar() {
+            calendar.refetchEvents();
+        }
+        setInterval(refreshCalendar, 300000);
+
+        calendar.render();
+    });
+
+</script>
+
+ <div class="text-center">
+     <h1 class="form-header tools-header oswald_500"></h1>
+ 
+  
+ 
+    <div id="calendar"></div>
+ </div>
+ 
+
+ <br />
+ <br />
+
+
+<script>
+    document.getElementById('addEventButton').addEventListener('click', function () {
+        // Pokaż formularz po kliknięciu przycisku
+        document.getElementById('createEventForm').style.display = 'block';
+
+        // Możesz dodać dodatkową logikę tutaj, jeśli jest to potrzebne
+    });
+</script>

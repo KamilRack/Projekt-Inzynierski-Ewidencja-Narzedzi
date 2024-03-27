@@ -1,0 +1,97 @@
+﻿@model Narzedzia.Models.ViewModels.EventsViewModel
+
+@{
+    ViewData["Title"] = "Edycja wydarzenia";
+}
+
+<link rel="stylesheet" href="~/css/AwarieStyle.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+Wy2Bkpz4uXu6sAPe5+aDhD5Pj9bpkNkJL4" crossorigin="anonymous">
+
+<style>
+    /* Dodaj poniższy styl CSS do zrównania wysokości karty na lewej i prawej stronie */
+    .card-edit {
+        max-height: auto; /* Możesz dostosować tę wartość do potrzeb */
+        width: 40%;
+        align-content: center;
+    }
+
+    .btn-editmargin {
+        margin-top: 2.5px;
+        margin-bottom: auto;
+    }
+
+    .card
+    {
+        max-height: auto;
+    }
+
+    #card {
+        max-height: auto;
+    }
+</style>
+<div class="container mt-5">
+    <h1 class="mb-4 oswald_400 tools-header" style="font-size: 2.5em;">Szczegóły wydarzenia:</h1>
+
+    <div class="card card-edit mx-auto">
+        <div class="card-body">
+            
+
+            <div class="row">
+                <div class="col-md-8 offset-md-2 p-0">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Events.IdCal" />
+
+                        <div class="mb-3">
+                            <label asp-for="Events.NameCal" class="form-label"></label>
+                            <input asp-for="Events.NameCal" class="form-control" />
+                            <span asp-validation-for="Events.NameCal" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Events.DescriptionCal" class="form-label"></label>
+                            <input asp-for="Events.DescriptionCal" class="form-control" />
+                            <span asp-validation-for="Events.DescriptionCal" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Events.StartCal" class="form-label"></label>
+                            <input asp-for="Events.StartCal" class="form-control" />
+                            <span asp-validation-for="Events.StartCal" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Events.EndCal" class="form-label"></label>
+                            <input asp-for="Events.EndCal" class="form-control" />
+                            <span asp-validation-for="Events.EndCal" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Stanowisko</label>
+                            @Html.DropDownList("Stanowiska", Model.Stanowisko, "Wybierz stanowisko", new { @class = "form-control required" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Narzedzie</label>
+                            @Html.DropDownList("Narzedzia", Model.Narzedzie, "Wybierz narzedzie", new { @class = "form-control required" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Wydzial</label>
+                            @Html.DropDownList("Wydzialy", Model.Wydzial, "Wybierz wydzial", new { @class = "form-control required" })
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="submit" value="Zapisz zmiany" class="btn btn-primary btn-block btn-editmargin" />
+                            <a asp-action="Index" class="btn btn-secondary">Powrót</a>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

@@ -1,0 +1,101 @@
+﻿@model Narzedzia.Models.ViewModels.EventsViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 class="oswald_400 tools-header">Dodaj wydarzenie:</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-4 interspace">
+        <form asp-action="Create" id="create-event">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Events.NameCal" class="control-label"></label>
+                <input asp-for="Events.NameCal" class="form-control" />
+                <span asp-validation-for="Events.NameCal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Events.DescriptionCal" class="control-label"></label>
+                <textarea asp-for="Events.DescriptionCal" class="form-control fs-5" id="DescriptionCal"></textarea>
+                <span asp-validation-for="Events.DescriptionCal" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+                <label asp-for="Events.StartCal" class="control-label"></label>
+                <input asp-for="Events.StartCal" class="form-control" />
+                <span asp-validation-for="Events.StartCal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Events.EndCal" class="control-label"></label>
+                <input asp-for="Events.EndCal" class="form-control" />
+                <span asp-validation-for="Events.EndCal" class="text-danger"></span>
+            </div>
+            @* <div class="form-group">
+                <label asp-for="Events.Wydzial" class="control-label"></label>
+                <select asp-for="Events.Wydzial" class="form-control" asp-items="Model.Wydzial">
+                    <option value="">Wybierz wydział</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Events.Narzedzie" class="control-label fs-5">Wybierz narzędzie:</label>
+                <select asp-for="Events.Narzedzie" class="form-control fs-5" asp-items="Model.Narzedzie">
+                    <option value="">Wybierz narzędzie</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Events.Stanowisko" class="control-label fs-5">Wybierz stanowisko:</label>
+                <select asp-for="Events.Stanowisko" class="form-control fs-5" asp-items="Model.Stanowisko">
+                    <option value="">Wybierz stanowisko</option>
+                </select>
+            </div> *@
+
+            <div class="form-group">
+                <label>Stanowisko</label>
+                @if (Model != null && Model.Stanowisko != null)
+                {
+                    @Html.DropDownList("Stanowiska", Model.Stanowisko, "Wybierz stanowisko", new { @class= "form-control required" })
+                }
+                else
+                {
+                    <p>Brak danych dla Stanowiska</p>
+                }
+            </div>
+
+            <div class="form-group">
+                <label>Narzedzie</label>
+                @if (Model != null && Model.Narzedzie != null)
+                {
+                    @Html.DropDownList("Narzedzia", Model.Narzedzie, "Wybierz narzedzie", new { @class= "form-control required" })
+                }
+                else
+                {
+                    <p>Brak danych dla Narzędzia</p>
+                }
+            </div>
+
+            <div class="form-group">
+                <label>Wydzial</label>
+                @if (Model != null && Model.Wydzial != null)
+                {
+                    @Html.DropDownList("Wydzialy", Model.Wydzial, "Wybierz wydział", new { @class= "form-control required" })
+                }
+                else
+                {
+                    <p>Brak danych dla Wydziału</p>
+                }
+            </div>
+            
+
+            <div class="form-group">
+                <input type="submit" value="Dodaj" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Powrót</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+

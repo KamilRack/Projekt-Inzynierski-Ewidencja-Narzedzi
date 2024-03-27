@@ -1,0 +1,74 @@
+﻿@model Narzedzia.Models.Awaria
+
+@{
+    ViewData["Title"] = "Tworzenie awarii";
+}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Dodaj te linki w sekcji <head> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <link rel="stylesheet" href="~/css/AwarieStyle.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap">
+
+    <!-- Dodaj niestandardowy styl CSS do zmiany rozmiaru czcionki SimpleMDE -->
+    <style>
+        .editor-preview, .CodeMirror {
+            font-size: 16px; /* Dostosuj rozmiar czcionki według własnych preferencji */
+        }
+    </style>
+</head>
+<!DOCTYPE html>
+
+<div class="container mt-5">
+    <h1 class="form-header tools-header oswald_400">Zgłaszanie awarii:</h1>
+    <hr />
+
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="NarzedzieId" class="control-label fs-5">Wybierz narzędzie:</label>
+                    <select asp-for="NarzedzieId" class="form-control fs-5" asp-items="ViewBag.NarzedzieId"></select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="DescriptionAwaria" class="control-label fs-5">Opis awarii:</label>
+                    <textarea asp-for="DescriptionAwaria" class="form-control fs-5" id="DescriptionAwaria"></textarea>
+                    <span asp-validation-for="DescriptionAwaria" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="NumberAwaria" class="control-label fs-5">Nr. telefonu kontaktowego:</label>
+                    <input asp-for="NumberAwaria" class="form-control fs-5" />
+                    <span asp-validation-for="NumberAwaria" class="text-danger"></span>
+                </div>
+
+                <div class="mt-3">
+                    <div class="d-grid gap-2">
+                        <input type="submit" value="Dodaj" class="btn btn-primary fs-5" />
+                        <a asp-action="Index" class="btn btn-secondary fs-5">Powrót</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<!-- Dodaj ten skrypt przed zamknięciem tagu </body> -->
+<script>
+    var simplemde = new SimpleMDE({
+        element: document.getElementById("DescriptionAwaria"),  // Wybierz pole tekstowe o id DescriptionAwaria
+        forceSync: true,  // Automatycznie synchronizuj zawartość z polem tekstowym
+        spellChecker: false  // Wyłącz sprawdzanie pisowni (opcjonalnie)
+    });
+</script>
