@@ -211,7 +211,7 @@ namespace Narzedzia.Controllers
         // POST: Narzedzia/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("NarzedzieId,ProducentId,KategoriaId,DataPrzyjecia,NumerNarzedzia,Nazwa,Status,UzytkownikId,Uwagi,ZdjecieFileName")] Narzedzie narzedzie, IFormFile ZdjecieFileName, string obecny, bool usunZdjecie = false)
+        public async Task<IActionResult> Edit(int id, [Bind("NarzedzieId,ProducentId,KategoriaId,DataPrzyjecia,NumerNarzedzia,Nazwa,Status,UzytkownikId,Uwagi,ZdjecieFileName")] Narzedzie narzedzie, string obecny)
         {
             if (id != narzedzie.NarzedzieId)
             {
@@ -230,44 +230,10 @@ namespace Narzedzia.Controllers
                         return NotFound();
                     }
 
-                    // Usunięcie zdjęcia, jeśli użytkownik zaznaczył odpowiednią opcję
-                    if (usunZdjecie && !string.IsNullOrEmpty(existingNarzedzie.ZdjecieFileName))
-                    {
-                        string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/narzedziagraphic", existingNarzedzie.ZdjecieFileName);
-                        if (System.IO.File.Exists(filePath))
-                        {
-                            System.IO.File.Delete(filePath);
-                        }
-
-                        existingNarzedzie.ZdjecieFileName = null;
-                    }
-
-                    // Jeśli użytkownik przesyła nowe zdjęcie, zaktualizuj je
-                    if (ZdjecieFileName != null && ZdjecieFileName.Length > 0)
-                    {
-                        string fileName = Path.GetFileName(ZdjecieFileName.FileName);
-                        string uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/narzedziagraphic", fileName);
-
-                        // Sprawdź, czy plik o tej samej nazwie już istnieje
-                        if (System.IO.File.Exists(uploadPath))
-                        {
-                            // Jeśli plik istnieje, zwróć błąd
-                            ModelState.AddModelError("", "Plik o tej samej nazwie już istnieje.");
-                            return View(narzedzie);
-                        }
-
-                        using (var stream = new FileStream(uploadPath, FileMode.Create))
-                        {
-                            await ZdjecieFileName.CopyToAsync(stream);
-                        }
-
-                        existingNarzedzie.ZdjecieFileName = fileName;
-                    }
-
                     // Aktualizacja pozostałych pól narzędzia
                     existingNarzedzie.ProducentId = narzedzie.ProducentId;
                     existingNarzedzie.KategoriaId = narzedzie.KategoriaId;
-                    existingNarzedzie.DataPrzyjecia = narzedzie.DataPrzyjecia;
+                    existingNarzedzie.DataPrzyjecia = narzedzie.DataPrzyjecia; // Update the date field
                     existingNarzedzie.NumerNarzedzia = narzedzie.NumerNarzedzia;
                     existingNarzedzie.Nazwa = narzedzie.Nazwa;
                     existingNarzedzie.Status = narzedzie.Status;
@@ -276,39 +242,19 @@ namespace Narzedzia.Controllers
 
                     _context.Update(existingNarzedzie);
                     await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception ex)
                 {
-                    if (!NarzedzieExists(narzedzie.NarzedzieId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    // Handle exception
+                    ModelState.AddModelError("", "Wystąpił błąd podczas aktualizacji narzędzia.");
                 }
-                return RedirectToAction(nameof(Index));
-            }
-
-            // Inicjalizacja SelectList
-            ViewData["KategoriaId"] = new SelectList(_context.Kategorie, "KategoriaId", "NazwaKategorii", narzedzie.KategoriaId);
-            ViewData["ProducentId"] = new SelectList(_context.Producenci, "ProducentId", "NazwaProducenta", narzedzie.ProducentId);
-            ViewData["UzytkownikId"] = new SelectList(_context.Uzytkownicy, "Id", "Id", narzedzie.UzytkownikId);
-
-            if (narzedzie.UzytkownikId == null)
-            {
-                ViewData["UzytkownikId"] = new SelectList(_context.Uzytkownicy, "Id", "Email");
-            }
-            else
-            {
-                ViewData["UzytkownikId"] = new SelectList(_context.Uzytkownicy, "Id", "Email", narzedzie.UzytkownikId);
-                ViewData["Obecny"] = narzedzie.Uzytkownicy?.Email;
-                ViewData["ObecnyId"] = narzedzie.UzytkownikId;
             }
 
             return View(narzedzie);
         }
+
 
         // GET: Narzedzia/Delete/5
         public async Task<IActionResult> Delete(int? id)

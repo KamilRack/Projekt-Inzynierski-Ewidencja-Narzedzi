@@ -22,6 +22,7 @@ namespace Narzedzia.Models
 
         [Required(ErrorMessage = "Numer telefonu jest wymagany.")]
         [StringLength(9, MinimumLength = 9, ErrorMessage = "Numer telefonu musi składać się z dokładnie 9 cyfr.")]
+        [RegularExpression(@"^\d{9}$", ErrorMessage = "Numer telefonu musi składać się tylko z cyfr.")]
         [CustomPhoneNumber(ErrorMessage = "Podany numer telefonu jest nieprawidłowy.")]
         [Display(Name = "Numer telefonu do kontaktu:")]
         public string NumberAwaria { get; set; }
