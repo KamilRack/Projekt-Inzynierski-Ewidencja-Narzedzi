@@ -12,7 +12,7 @@ namespace Narzedzia.Models
 
         [Required]
         [Display(Name = "Nazwa wydziału:")]
-        [MaxLength(3)]
+        [MaxLength(6)]
         public string NazwaWydzialu { get; set; }
 
         [Required]

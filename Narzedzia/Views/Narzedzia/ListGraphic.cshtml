@@ -4,8 +4,6 @@
     ViewData["Title"] = "Narzędzia";
 }
 
-
-
 <h1 class="oswald_400 tools-header">Spis Narzędzi</h1>
 <hr />
 
@@ -18,35 +16,37 @@
 <div class="row card-tools-background" id="cardContainer">
     @foreach (var item in Model)
     {
-        <div class="col-md-4 mb-4 card-item">
-            <div class="card">
-                <img src="~/img/narzedziagraphic/@item.ZdjecieFileName" class="card-img-top" alt="Zdjęcie narzędzia">
-                <div class="card-body">
-                    <h5 class="card-title">@item.Nazwa</h5>
-                    <p class="card-text">
-                        Producent: @item.Producenci.NazwaProducenta<br />
-                        Numer narzędzia: @item.NumerNarzedzia<br />
-                        Kategoria: @item.Kategorie.NazwaKategorii<br />
-                        Data przyjęcia: @item.DataPrzyjecia.ToShortDateString()<br />
-                        Status: @item.Status<br />
-                        Użytkownik: @(item.Uzytkownicy != null ? item.Uzytkownicy.UserName : "Brak informacji")
-                    </p>
-                    @{
-    if (User.IsInRole("admin") || (User.IsInRole("nadzor")))
-    {
+        // Tylko renderuj narzędzia, które nie są w statusie "zlikwidowane"
+        if (item.Status != Narzedzia.Models.Status.zlikwidowane) // Załóżmy, że pełna ścieżka to Narzedzia.Models.Status
+        {
+            <div class="col-md-4 mb-4 card-item">
+                <div class="card">
+                    <img src="~/img/narzedziagraphic/@item.ZdjecieFileName" class="card-img-top" alt="Zdjęcie narzędzia">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Nazwa</h5>
+                        <p class="card-text">
+                            Producent: @item.Producenci.NazwaProducenta<br />
+                            Numer narzędzia: @item.NumerNarzedzia<br />
+                            Kategoria: @item.Kategorie.NazwaKategorii<br />
+                            Data przyjęcia: @item.DataPrzyjecia.ToShortDateString()<br />
+                            Status: @item.Status<br />
+                            Użytkownik: @(item.Uzytkownicy != null ? item.Uzytkownicy.UserName : "Brak informacji")
+                        </p>
+                        @if (User.IsInRole("admin") || User.IsInRole("nadzor"))
+                        {
                             <div class="btn-group btn-group-lg">
                                 <a asp-action="Details" asp-route-id="@item.NarzedzieId" class="btn btn-outline-secondary btn-sm" title="Szczegóły"><i class="bi bi-info-square"></i></a>
-                            <a asp-action="Edit" asp-route-id="@item.NarzedzieId" class="btn btn-outline-primary btn-sm" title="Edytuj"><i class="bi bi-pencil"></i></a>
-                            <a asp-action="Delete" asp-route-id="@item.NarzedzieId" class="btn btn-outline-danger btn-sm" title="Usuń"><i class="bi bi-trash"></i></a>
+                                <a asp-action="Edit" asp-route-id="@item.NarzedzieId" class="btn btn-outline-primary btn-sm" title="Edytuj"><i class="bi bi-pencil"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.NarzedzieId" class="btn btn-outline-danger btn-sm" title="Usuń"><i class="bi bi-trash"></i></a>
                             </div>
                         }
-    }
-                   
                     </div>
+                </div>
             </div>
-        </div>
+        }
     }
 </div>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const searchInput = document.getElementById("searchInput");

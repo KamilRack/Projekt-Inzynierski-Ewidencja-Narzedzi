@@ -17,11 +17,12 @@ namespace Narzedzia.Controllers
 	public class WydzialyController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IDAL _idal;
-        public WydzialyController(ApplicationDbContext context, IDAL idal)
+        private readonly ApplicationDbContext _dbContext;
+
+        public WydzialyController(ApplicationDbContext context, ApplicationDbContext dbContext)
         {
             _context = context;
-            _idal = idal;
+            _dbContext = dbContext;
 
         }
         // Akcja eksportu danych do pliku Excel

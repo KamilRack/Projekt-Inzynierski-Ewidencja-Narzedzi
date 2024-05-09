@@ -23,7 +23,7 @@ namespace Narzedzia.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Tools1DB;Trusted_Connection=True;MultipleActiveResultSets=true");
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Tools2DB;Trusted_Connection=True;MultipleActiveResultSets=true");
             }
         }
         public DbSet<Uzytkownik> Uzytkownicy { get; set; }

@@ -29,8 +29,11 @@ namespace Narzedzia.Models
         public int? StanowiskoId { get; set; }
         public virtual Stanowisko Stanowisko { get; set; }
 
-        [ForeignKey("Wydzial")]
+        [Display(Name = "Wydział:")]
+
         public int? WydzialId { get; set; }
+        [ForeignKey("WydzialId")]
+
         public virtual Wydzial Wydzial { get; set; }
 
         public Events(IFormCollection form, Narzedzie narzedzia, Stanowisko stanowiska, Wydzial wydzialy)

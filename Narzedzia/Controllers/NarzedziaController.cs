@@ -12,13 +12,16 @@ using Narzedzia.Data;
 using Narzedzia.Models;
 using System.IO;
 using OfficeOpenXml;
+using Microsoft.AspNetCore.Identity;
 
 namespace Narzedzia.Controllers
 {
     public class NarzedziaController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
+       
         public NarzedziaController(ApplicationDbContext context)
         {
             _context = context;
@@ -211,7 +214,7 @@ namespace Narzedzia.Controllers
         // POST: Narzedzia/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("NarzedzieId,ProducentId,KategoriaId,DataPrzyjecia,NumerNarzedzia,Nazwa,Status,UzytkownikId,Uwagi,ZdjecieFileName")] Narzedzie narzedzie, string obecny)
+        public async Task<IActionResult> Edit(int id, [Bind("NarzedzieId,ProducentId,KategoriaId,DataPrzyjecia,NumerNarzedzia,Nazwa,Status,UzytkownikId,Uwagi,ZdjecieFileName")] Narzedzie narzedzie, IFormFile? ZdjecieFileName, bool usunZdjecie = false)
         {
             if (id != narzedzie.NarzedzieId)
             {
@@ -230,30 +233,70 @@ namespace Narzedzia.Controllers
                         return NotFound();
                     }
 
+                    // Usunięcie zdjęcia, jeśli użytkownik zaznaczył odpowiednią opcję
+                    if (usunZdjecie && !string.IsNullOrEmpty(existingNarzedzie.ZdjecieFileName))
+                    {
+                        string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/narzedziagraphic", existingNarzedzie.ZdjecieFileName);
+                        if (System.IO.File.Exists(filePath))
+                        {
+                            System.IO.File.Delete(filePath);
+                        }
+
+                        existingNarzedzie.ZdjecieFileName = null;
+                    }
+                    else if (ZdjecieFileName != null && ZdjecieFileName.Length > 0)
+                    {
+                        // Jeśli użytkownik przesyła nowe zdjęcie, zaktualizuj je
+                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(ZdjecieFileName.FileName);
+                        string uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/narzedziagraphic", uniqueFileName);
+                        using (var stream = new FileStream(uploadPath, FileMode.Create))
+                        {
+                            await ZdjecieFileName.CopyToAsync(stream);
+                        }
+                        existingNarzedzie.ZdjecieFileName = uniqueFileName;
+                    }
+                    // Jeśli zdjęcie nie jest usuwane ani zmieniane, zachowaj istniejące
+                    else if (!usunZdjecie && ZdjecieFileName == null)
+                    {
+                        // Pozostaw obecne zdjęcie bez zmian.
+                        existingNarzedzie.ZdjecieFileName = existingNarzedzie.ZdjecieFileName;
+                    }
+
                     // Aktualizacja pozostałych pól narzędzia
                     existingNarzedzie.ProducentId = narzedzie.ProducentId;
                     existingNarzedzie.KategoriaId = narzedzie.KategoriaId;
-                    existingNarzedzie.DataPrzyjecia = narzedzie.DataPrzyjecia; // Update the date field
+                    existingNarzedzie.DataPrzyjecia = narzedzie.DataPrzyjecia;
                     existingNarzedzie.NumerNarzedzia = narzedzie.NumerNarzedzia;
                     existingNarzedzie.Nazwa = narzedzie.Nazwa;
                     existingNarzedzie.Status = narzedzie.Status;
                     existingNarzedzie.Uwagi = narzedzie.Uwagi;
-                    existingNarzedzie.UzytkownikId = narzedzie.UzytkownikId; // Ustawienie UzytkownikId na nową wartość
+                    existingNarzedzie.UzytkownikId = narzedzie.UzytkownikId;
 
                     _context.Update(existingNarzedzie);
                     await _context.SaveChangesAsync();
-
-                    return RedirectToAction(nameof(Index));
                 }
-                catch (Exception ex)
+                catch (DbUpdateConcurrencyException)
                 {
-                    // Handle exception
-                    ModelState.AddModelError("", "Wystąpił błąd podczas aktualizacji narzędzia.");
+                    if (!NarzedzieExists(narzedzie.NarzedzieId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
+                return RedirectToAction(nameof(Index));
             }
+
+            // Inicjalizacja SelectList
+            ViewData["KategoriaId"] = new SelectList(_context.Kategorie, "KategoriaId", "NazwaKategorii", narzedzie.KategoriaId);
+            ViewData["ProducentId"] = new SelectList(_context.Producenci, "ProducentId", "NazwaProducenta", narzedzie.ProducentId);
+            ViewData["UzytkownikId"] = new SelectList(_context.Uzytkownicy, "Id", "Email", narzedzie.UzytkownikId);
 
             return View(narzedzie);
         }
+
 
 
         // GET: Narzedzia/Delete/5
