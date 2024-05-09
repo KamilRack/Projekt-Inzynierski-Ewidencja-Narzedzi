@@ -96,3 +96,17 @@ color: white;
 .card-custom {
     background-color: #333131;
 }
+/* Zmiana koloru paska narzędzi */
+.editor-toolbar {
+    background-color: lightgray; /* Tutaj podaj swój kolor */
+    color: white; /* Dopasuj kolor tekstu ikonek */
+}
+
+    /* Zmiana koloru przycisków */
+    .editor-toolbar a {
+        color: wheat; /* Kolor przycisków */
+    }
+
+        .editor-toolbar a:hover {
+            background-color: #2980b9; /* Kolor tła przycisku po najechaniu myszką */
+        }

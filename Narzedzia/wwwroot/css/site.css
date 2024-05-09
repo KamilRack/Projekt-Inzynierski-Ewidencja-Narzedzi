@@ -261,3 +261,17 @@ body {
     font-weight: bold !important;
     font-size: 15px !important;
 }
+/* Zmiana koloru paska narzêdzi */
+.editor-toolbar {
+    background-color: lightgray; /* Tutaj podaj swój kolor */
+    color: white; /* Dopasuj kolor tekstu ikonek */
+}
+
+    /* Zmiana koloru przycisków */
+    .editor-toolbar a {
+        color: wheat; /* Kolor przycisków */
+    }
+
+        .editor-toolbar a:hover {
+            background-color: #2980b9; /* Kolor t³a przycisku po najechaniu myszk¹ */
+        }
