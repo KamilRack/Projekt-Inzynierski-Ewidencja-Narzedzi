@@ -9,7 +9,7 @@ namespace Narzedzia.Models
         [Display(Name = "Identyfikator producenta:")]
         public int ProducentId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Pole Nazwa producenta jest wymagane.")]
         [Display(Name = "Nazwa producenta:")]
         [MaxLength(40)]
         public string NazwaProducenta { get; set; }

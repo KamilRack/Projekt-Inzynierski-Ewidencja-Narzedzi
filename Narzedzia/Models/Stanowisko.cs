@@ -10,7 +10,7 @@ namespace Narzedzia.Models
         [Display(Name = "Identyfikator stanowiska:")]
         public int StanowiskoId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Pole Nazwa stanowiska jest wymagane.")]
         [Display(Name = "Nazwa stanowiska:")]
         [MaxLength(3)]
         public string NazwaStanowiska { get; set; }

@@ -11,12 +11,16 @@ namespace Narzedzia.Models
         [Key]
         [Display(Name = "Id:")] 
         public int IdCal { get; set; }
+        [Required(ErrorMessage = "Pole Temat jest wymagane.")]
         [Display(Name = "Temat:")]
         public string NameCal { get; set; }
+        [Required(ErrorMessage = "Pole Opis jest wymagane.")]
         [Display(Name = "Opis:")]
         public string DescriptionCal { get; set; }
         [Display(Name = "Data od:")]
+        [Required(ErrorMessage = "Pole Data od jest wymagane.")]
         public DateTime StartCal { get; set; }
+        [Required(ErrorMessage = "Pole Data do jest wymagane.")]
         [Display(Name = "Data do:")]
         public DateTime EndCal { get; set; }
 

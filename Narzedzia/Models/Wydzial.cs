@@ -10,7 +10,7 @@ namespace Narzedzia.Models
         [Display(Name = "Identyfikator wydziału:")]
         public int WydzialId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Pole Nazwa wydziału jest wymagane.")]
         [Display(Name = "Nazwa wydziału:")]
         [MaxLength(6)]
         public string NazwaWydzialu { get; set; }

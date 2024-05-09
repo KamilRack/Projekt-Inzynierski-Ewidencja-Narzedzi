@@ -10,7 +10,7 @@ namespace Narzedzia.Models
         [Display(Name = "Identyfikator kategorii:")]
         public int KategoriaId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Pole Nazwa kategorii jest wymagane.")]
         [Display(Name = "Nazwa kategorii:")]
         [MaxLength(40)]
         public string NazwaKategorii { get; set; }

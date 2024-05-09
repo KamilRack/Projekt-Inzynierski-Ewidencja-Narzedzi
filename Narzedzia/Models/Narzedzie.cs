@@ -26,11 +26,13 @@ namespace Narzedzia.Models
 
         [Display(Name = "Użytkownik narzędzia:")]
         public string? UzytkownikId { get; set; }
-
+       
+        [Required(ErrorMessage = "Pole Numer narzędzia jest wymagane.")]
         [Display(Name = "Numer narzędzia:")]
         public int NumerNarzedzia { get; set; }
 
         [MaxLength(40)]
+        [Required(ErrorMessage = "Pole Nazwa narzędzia jest wymagane.")]
         [Display(Name = "Nazwa narzędzia:")]
         public string Nazwa { get; set; }
 
@@ -72,3 +74,4 @@ namespace Narzedzia.Models
         naprawiane
     }
 }
+

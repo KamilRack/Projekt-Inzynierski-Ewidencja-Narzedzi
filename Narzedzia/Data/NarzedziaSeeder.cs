@@ -24,33 +24,10 @@ namespace Narzedzia.Data
                     SeedProducent(dbContext);
                     SeedUsers(dbContext);
                     SeedNarzedzie(dbContext);
-                    SeedAwaria(dbContext);
                 }
         }
 
-        private static void SeedAwaria(ApplicationDbContext dbContext)
-        {
-            // 1
-            if (!dbContext.Awarie.Any(a => a.IdAwaria == 1))
-            {
-                var awaria1 = new Awaria
-                {
-                    NarzedzieId = 1, 
-                    DescriptionAwaria = "Przykładowy opis awarii, który musi mieć co najmniej 20 znaków.",
-                    NumberAwaria = "123456789",
-                    DataPrzyjecia = DateTime.Today,
-                    UzytkownikId = LosowyUser(dbContext), 
-                    Status = StatusAwaria.nowe, 
-                    UzytkownikRealizujacyId = null, 
-                    StanowiskoId = 1, 
-                    WydzialId = 1 
-                };
-
-                dbContext.Awarie.Add(awaria1);
-                dbContext.SaveChanges();
-            }
-        }
-
+  
         private static void SeedRoles(ApplicationDbContext dbContext)
         {
             var roleStore = new RoleStore<IdentityRole>(dbContext);

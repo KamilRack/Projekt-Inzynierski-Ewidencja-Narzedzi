@@ -8,10 +8,13 @@ namespace Narzedzia.Models
     {
 
         [Display(Name ="Imię użytkownika:")]
+        [Required(ErrorMessage = "Pole Imię użytkownika jest wymagane.")]
         [MaxLength(20)]
         public string? Imie { get; set; }
 
         [Display(Name = "Nazwisko użytkownika:")]
+        [Required(ErrorMessage = "Pole Nazwisko użytkownika jest wymagane.")]
+
         [MaxLength(50)]
         public string? Nazwisko { get; set; }
 
@@ -21,7 +24,7 @@ namespace Narzedzia.Models
         {
             get { return Imie + " " + Nazwisko; }
         }
-
+        [Required(ErrorMessage = "Pole Numer kontrolny jest wymagane.")]
         [Display(Name ="Numer kontrolny:")]
         public int NrKontrolny { get; set; }
 
